@@ -5,12 +5,53 @@
 			"style": {
 				"navigationBarTitleText": "Dg Broker"
 			}
+		}, {
+			"path": "pages/trde/trde",
+			"style": {
+				"navigationBarTitleText": "Market",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/profile/profile",
+			"style": {
+				"navigationBarTitleText": "Wallet",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#4a5e78",
+		"selectedColor": "#1c9ced",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"height": "50px",
+		"fontSize": "10px",
+		"iconWidth": "24px",
+		"spacing": "3px",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tab-bar-icon/tabBar-1.png",
+				"selectedIconPath": "static/tab-bar-icon/tabBar-active-1.png",
+				"text": "Home"
+			},
+			{
+				"pagePath": "pages/trde/trde",
+				"iconPath": "static/tab-bar-icon/tabBar-2.png",
+				"selectedIconPath": "static/tab-bar-icon/tabBar-active-2.png",
+				"text": "Market"
+			}, {
+				"pagePath": "pages/profile/profile",
+				"iconPath": "static/tab-bar-icon/tabBar-3.png",
+				"selectedIconPath": "static/tab-bar-icon/tabBar-active-3.png",
+				"text": "Wallet"
+			}
+		]
 	},
 	"uniIdRouter": {}
 }

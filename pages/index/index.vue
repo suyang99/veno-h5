@@ -416,7 +416,7 @@
 
 			.content-widhraw-log {
 				.mq {
-					height: 280rpx;
+					height: 340rpx;
 					background: #fff;
 					overflow: hidden;
 
