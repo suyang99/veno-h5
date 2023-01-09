@@ -14,7 +14,7 @@
 		</view>
 		<view class="content-operation">
 			<view class="content-operation2">
-				<view class="content-operation-item"
+				<view class="content-operation-item" @click="goRechargePage"
 					style="background: url(https://dgbroker.in/app/img/deposit_bg@2x.24ebf008.png) no-repeat center center;background-size: contain;">
 					<image class="operation-item-icon" src="https://dgbroker.in/app/img/deposit@2x.708eddb6.png"
 						mode="aspectFit" />
@@ -333,6 +333,11 @@
 		methods: {
 			change(e) {
 				this.current = e.detail.current;
+			},
+			goRechargePage() {
+				uni.navigateTo({
+					url: '/pages/index/recharge/recharge',
+				})
 			}
 		}
 	}

@@ -6,6 +6,11 @@
 				"navigationBarTitleText": "Dg Broker"
 			}
 		}, {
+			"path": "pages/index/recharge/recharge",
+			"style": {
+				"navigationBarTitleText": "Recharge"
+			}
+		}, {
 			"path": "pages/trde/trde",
 			"style": {
 				"navigationBarTitleText": "Market",
