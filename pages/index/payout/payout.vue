@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="content-records">
+		<view class="content-records" @click="goRecordsPage">
 			Records
 		</view>
 		<view class="content-balance">
@@ -53,7 +53,11 @@
 			}
 		},
 		methods: {
-
+			goRecordsPage() {
+				uni.navigateTo({
+					url: '/pages/index/payout/records/records'
+				})
+			}
 		}
 	}
 </script>
@@ -65,7 +69,9 @@
 		.content-records {
 			text-align: right;
 			color: #1989fa;
-			padding: 10px;
+			padding: 20rpx;
+			padding-bottom: 0;
+
 		}
 
 		.content-balance {
