@@ -3,13 +3,22 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "Dg Broker"
+				"navigationBarTitleText": "Dg Broker",
+				"enablePullDownRefresh": false
 			}
 		}, {
 			"path": "pages/index/recharge/recharge",
 			"style": {
-				"navigationBarTitleText": "Recharge"
+				"navigationBarTitleText": "Recharge",
+				"enablePullDownRefresh": false
 			}
+		}, {
+			"path": "pages/index/recharge/bank_transfer/bank_transfer",
+			"style": {
+				"navigationBarTitleText": "BANK TRANSFER",
+				"enablePullDownRefresh": false
+			}
+
 		}, {
 			"path": "pages/trde/trde",
 			"style": {
@@ -24,6 +33,7 @@
 				"enablePullDownRefresh": false
 			}
 		}
+
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

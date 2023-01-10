@@ -51,7 +51,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="content-pay">
+		<view class="content-pay" @click="goBankTransferPage">
 			NEXT
 		</view>
 	</view>
@@ -66,8 +66,15 @@
 			}
 		},
 		methods: {
+			//快速选择充值金额
 			setRecharge(value) {
 				this.recharge = value
+			},
+			// 去往转载页面
+			goBankTransferPage() {
+				uni.navigateTo({
+					url: '/pages/index/recharge/bank_transfer/bank_transfer?money=' + this.recharge
+				})
 			}
 		}
 	}
