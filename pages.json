@@ -20,6 +20,13 @@
 			}
 
 		}, {
+			"path": "pages/index/payout/payout",
+			"style": {
+				"navigationBarTitleText": "Withdraw",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
 			"path": "pages/trde/trde",
 			"style": {
 				"navigationBarTitleText": "Market",
@@ -33,7 +40,6 @@
 				"enablePullDownRefresh": false
 			}
 		}
-
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

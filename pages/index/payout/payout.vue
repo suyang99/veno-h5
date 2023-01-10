@@ -1,0 +1,150 @@
+<template>
+	<view class="content">
+		<view class="content-records">
+			Records
+		</view>
+		<view class="content-balance">
+			<view class="content-balance-key">
+				Available Balance:
+			</view>
+			<view class="content-balance-value">
+				₹ 95.00
+			</view>
+		</view>
+		<view class="recharge-input">
+			<uni-easyinput type="number" v-model="amount" :inputBorder='false' :clearable="false" />
+		</view>
+		<view class="content-balance content-balance2">
+			<view class="content-balance-key">
+				Taxs:
+			</view>
+			<view class="content-balance-value">
+				₹ 0.18
+			</view>
+		</view>
+		<view class="content-balance content-balance2">
+			<view class="content-balance-key">
+				Total Amount:
+			</view>
+			<view class="content-balance-value">
+				₹ 1.18
+			</view>
+		</view>
+		<view class="content-bankitem">
+			SELECT BANK
+		</view>
+		<view class="content-note">
+			<image class="content-note-icon" src="../../../static/index/note-icon.png" mode="aspectFit" />
+			<view class="content-note-text">
+				Withdrawal charges 20% Taxs, withdraw time Monday-Friday 7am-9am
+			</view>
+		</view>
+		<view class="content-pay">
+			Submit
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				amount: 0
+			}
+		},
+		methods: {
+
+		}
+	}
+</script>
+
+<style lang="scss">
+	.content {
+		padding: 20rpx;
+
+		.content-records {
+			text-align: right;
+			color: #1989fa;
+			padding: 10px;
+		}
+
+		.content-balance {
+			padding: 20rpx;
+			margin: 20rpx;
+			display: flex;
+			align-items: flex-end;
+			border-bottom: 1px solid #f2f2f2;
+
+			.content-balance-key {
+				color: #949292;
+			}
+
+			.content-balance-value {
+				margin-left: 20rpx;
+				font-size: 40rpx;
+				color: #555;
+				font-weight: 400;
+			}
+		}
+
+		.content-balance2 {
+			border: none;
+			margin: 0;
+			padding-top: 0;
+
+			.content-balance-value {}
+		}
+
+		.recharge-input {
+			margin: 40rpx;
+			padding: 20rpx;
+			margin-bottom: 20rpx;
+			background: #f7f7f7;
+			border: 1px solid #f2f2f2;
+			border-radius: 20rpx;
+
+
+			::v-deep .uni-easyinput__content {
+				background-color: rgba(0, 0, 0, 0) !important;
+			}
+
+			::v-deep .uni-input-input {
+				font-size: 20px;
+			}
+		}
+
+		.content-bankitem {
+			border: 1px dashed #555;
+			border-radius: 20rpx;
+			padding: 40rpx;
+		}
+
+		.content-note {
+			margin: 20rpx 0;
+			padding: 20rpx;
+			display: flex;
+			align-items: center;
+			color: rgb(25, 137, 250);
+			background: rgb(236, 249, 255);
+
+			.content-note-icon {
+				width: 50rpx;
+				height: 50rpx;
+				margin-right: 20rpx
+			}
+		}
+
+		.content-pay {
+			width: 95%;
+			border: none;
+			background-image: linear-gradient(90deg, #5ad2fe, #1c9ced);
+			color: #fff;
+			text-align: center;
+			margin: 40rpx auto;
+			padding: 20rpx 0;
+			border-radius: 40rpx;
+			font-size: 36rpx;
+			font-weight: 500;
+		}
+	}
+</style>
