@@ -81,6 +81,16 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "Login",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
 	],
 	"globalStyle": {

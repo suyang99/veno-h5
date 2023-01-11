@@ -328,7 +328,13 @@
 			}
 		},
 		onLoad() {
+			if (uni.getStorageSync('ifLogin')) {
 
+			} else {
+				uni.redirectTo({
+					url: '/pages/login/login'
+				})
+			}
 		},
 		methods: {
 			change(e) {

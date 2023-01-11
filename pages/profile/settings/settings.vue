@@ -16,7 +16,10 @@
 		},
 		methods: {
 			logOut() {
-				uni.navigateBack()
+				uni.removeStorageSync('ifLogin')
+				uni.redirectTo({
+					url: '/pages/login/login'
+				})
 			}
 		}
 	}
