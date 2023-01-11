@@ -56,7 +56,7 @@
 					Online service
 				</view>
 			</view>
-			<view class="content-actions-item">
+			<view class="content-actions-item" @click="goSettingsPage">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-5.png" mode="aspectFit" />
 				<view class="actions-item-name">
 					Settings
@@ -97,6 +97,11 @@
 			goDirectPage() {
 				uni.navigateTo({
 					url: "/pages/index/direct/direct"
+				})
+			},
+			goSettingsPage() {
+				uni.navigateTo({
+					url: '/pages/profile/settings/settings'
 				})
 			}
 		}

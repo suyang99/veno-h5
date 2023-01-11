@@ -74,6 +74,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/profile/settings/settings",
+			"style": {
+				"navigationBarTitleText": "Settings",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
