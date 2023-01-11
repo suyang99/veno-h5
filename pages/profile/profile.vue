@@ -21,10 +21,10 @@
 						₹95.00
 					</view>
 					<view class="card-balance-black">
-						<view class="balance-black-btm">
+						<view class="balance-black-btm" @click="goPayoutPage">
 							Withdraw
 						</view>
-						<view class="balance-black-btm">
+						<view class="balance-black-btm" @click="goRechargePage">
 							Recharge
 						</view>
 					</view>
@@ -74,7 +74,16 @@
 			}
 		},
 		methods: {
-
+			goPayoutPage() {
+				uni.navigateTo({
+					url: '/pages/index/payout/payout'
+				})
+			},
+			goRechargePage() {
+				uni.navigateTo({
+					url: '/pages/index/recharge/recharge'
+				})
+			},
 		}
 	}
 </script>
