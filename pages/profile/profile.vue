@@ -44,7 +44,7 @@
 					Security
 				</view>
 			</view>
-			<view class="content-actions-item">
+			<view class="content-actions-item" @click="goDirectPage">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-3.png" mode="aspectFit" />
 				<view class="actions-item-name">
 					Direct Subordinate
@@ -84,6 +84,11 @@
 					url: '/pages/index/recharge/recharge'
 				})
 			},
+			goDirectPage() {
+				uni.navigateTo({
+					url: "/pages/index/direct/direct"
+				})
+			}
 		}
 	}
 </script>

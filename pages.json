@@ -46,6 +46,13 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/index/direct/direct",
+			"style": {
+				"navigationBarTitleText": "DIRECT SUBORDINATE",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
