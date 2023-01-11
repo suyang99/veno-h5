@@ -3,7 +3,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "Dg Broker",
+				"navigationBarTitleText": "Veno Broker",
 				"enablePullDownRefresh": false
 			}
 		}, {
@@ -50,6 +50,13 @@
 			"path": "pages/index/direct/direct",
 			"style": {
 				"navigationBarTitleText": "DIRECT SUBORDINATE",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/profile/recods/recods",
+			"style": {
+				"navigationBarTitleText": "Exchange Recods",
 				"enablePullDownRefresh": false
 			}
 

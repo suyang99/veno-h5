@@ -32,7 +32,7 @@
 			</view>
 		</view>
 		<view class="content-actions">
-			<view class="content-actions-item">
+			<view class="content-actions-item" @click="goRecods">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-1.png" mode="aspectFit" />
 				<view class="actions-item-name">
 					Exchange Record
@@ -82,6 +82,11 @@
 			goRechargePage() {
 				uni.navigateTo({
 					url: '/pages/index/recharge/recharge'
+				})
+			},
+			goRecods() {
+				uni.navigateTo({
+					url: '/pages/profile/recods/recods'
 				})
 			},
 			goDirectPage() {
