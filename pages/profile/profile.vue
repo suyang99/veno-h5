@@ -32,13 +32,13 @@
 			</view>
 		</view>
 		<view class="content-actions">
-			<view class="content-actions-item" @click="goRecods">
+			<view class="content-actions-item" @click="goRecodsPage">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-1.png" mode="aspectFit" />
 				<view class="actions-item-name">
 					Exchange Record
 				</view>
 			</view>
-			<view class="content-actions-item">
+			<view class="content-actions-item" @click="goSafePage">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-2.png" mode="aspectFit" />
 				<view class="actions-item-name">
 					Security
@@ -84,7 +84,12 @@
 					url: '/pages/index/recharge/recharge'
 				})
 			},
-			goRecods() {
+			goSafePage() {
+				uni.navigateTo({
+					url: '/pages/profile/safe/safe'
+				})
+			},
+			goRecodsPage() {
 				uni.navigateTo({
 					url: '/pages/profile/recods/recods'
 				})

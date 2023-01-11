@@ -60,6 +60,20 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/profile/safe/safe",
+			"style": {
+				"navigationBarTitleText": "Safety Management",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/profile/safe/changeloginpass/changeloginpass",
+			"style": {
+				"navigationBarTitleText": "Modify login password",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
