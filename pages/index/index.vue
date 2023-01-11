@@ -55,7 +55,7 @@
 				Users Withdraw
 			</view>
 			<view class="content-widhraw-log">
-				<marquee behavior="alternate" scrolldelay="200" direction="up" align="absmiddle" class="mq">
+				<marquee behavior="scroll" scrolldelay="200" direction="up" align="absmiddle" class="mq">
 					<view class="item">
 						<view class="item-li">MS Yashaswini </view>
 						<view class="item-li">600</view>
@@ -96,7 +96,7 @@
 						<view class="item-li">1800</view>
 						<view class="item-li">Succeed</view>
 					</view>
-					<view class="item">
+					<!-- <view class="item">
 						<view class="item-li">Kalai</view>
 						<view class="item-li">2500</view>
 						<view class="item-li">Succeed</view>
@@ -305,7 +305,7 @@
 						<view class="item-li">James Samuel B </view>
 						<view class="item-li">738</view>
 						<view class="item-li">Succeed</view>
-					</view>
+					</view> -->
 				</marquee>
 			</view>
 		</view>
@@ -356,6 +356,8 @@
 
 		.content-slideshow {
 			padding: 0 20rpx;
+			height: 360rpx;
+			overflow: auto;
 
 			.remake-swiper-item {
 				height: 440rpx;
@@ -369,18 +371,14 @@
 
 		.content-operation {
 			margin: 0 20rpx;
-			height: 260rpx;
-			position: relative;
 
 			.content-operation2 {
-				position: absolute;
-				top: -90rpx;
 				display: flex;
 				justify-content: space-between;
 				flex-wrap: wrap;
 
 				.content-operation-item {
-					width: 190px;
+					width: 48%;
 					height: 80px;
 					margin: 10rpx 0;
 					display: flex;
