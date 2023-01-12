@@ -59,7 +59,7 @@
 			</view>
 		</view>
 		<view class="kline-chart">
-			第{{activeNav}}个图表📈
+			<echarts :option="echartsOption" style="height: 45vh;" />
 		</view>
 		<view class="kline-btns">
 			<view class="kline-balance">
@@ -100,25 +100,108 @@
 				</view>
 			</view>
 		</view>
-
 	</view>
 </template>
 
 <script>
+	import echarts from '@/components/echarts/echarts.vue'
 	export default {
+		components: {
+			echarts
+		},
 		data() {
 			return {
 				activeNav: 0,
-				inputValue: 0
+				inputValue: 0,
+				xAxisDatas: ['', '', '', '', '', '', '', '', '', '', ''],
+				yAxisDatas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+				echartsOption: {
+					animation: false,
+					grid: {
+						left: '0', //距离左边的距离
+						right: '0', //距离右边的距离
+						bottom: '10px', //距离下边的距离
+						top: '10px' //距离上边的距离
+					},
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						splitLine: {
+							show: true,
+							lineStyle: {
+								type: 'dashed',
+								color: 'rgba(128, 128, 128, 0.3)'
+							}
+						},
+						axisLabel: {
+							show: false, // 不显示坐标轴上的文字
+						},
+						data: []
+					},
+					yAxis: {
+						axisLabel: {
+							inside: true,
+							textStyle: {
+								color: '#639cab'
+							}
+						},
+						type: 'value',
+						position: 'right',
+						splitLine: {
+							show: true,
+							lineStyle: {
+								type: 'dashed',
+								color: 'rgba(128, 128, 128, 0.3)'
+							}
+						},
+						interval: 20,
+					},
+					series: [{
+						symbol: "none",
+						data: [],
+						type: 'line',
+						areaStyle: {
+							normal: {
+								color: '#48647f ' //改变区域颜色
+							}
+						},
+						itemStyle: {
+							normal: {
+								lineStyle: {
+									color: '#639cab'
+								}
+							}
+						},
+
+					}],
+					tooltip: {
+						show: true,
+						trigger: 'axis',
+						axisPointer: {
+							type: 'cross'
+						},
+					}
+				}
 			}
 		},
 		onLoad(option) {
 			uni.setNavigationBarTitle({
 				title: option.name + '/USTD'
 			})
+			this.initEchartsData()
 		},
 		methods: {
+			initEchartsData() {
+				let NewXAxisDatas = this.yAxisDatas;
+				NewXAxisDatas.splice(0, 1)
+				NewXAxisDatas[9] = Math.floor(Math.random() * (100 - 0) + 0)
+				this.yAxisDatas = NewXAxisDatas;
+				this.echartsOption.series[0].data = NewXAxisDatas
 
+				setTimeout(() => {
+					this.initEchartsData()
+				}, 1000)
+			}
 		}
 	}
 </script>
@@ -195,8 +278,7 @@
 
 		.kline-chart {
 			color: white;
-			height: 45vh;
-			border: 1px solid red;
+			// border: 1px solid red;
 		}
 
 		.kline-btns {
