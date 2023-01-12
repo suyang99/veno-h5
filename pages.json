@@ -91,6 +91,16 @@
 				}
 			}
 
+		}, {
+			"path": "pages/trde/kline/kline",
+			"style": {
+				"navigationBarTitleText": "K-Line",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#161e31",
+				"navigationBarTextStyle": "white" //状态栏字体颜色
+
+			}
+
 		}
 	],
 	"globalStyle": {

@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="mraket-content">
-			<view class="mraket-list" v-for="item in 15" :key="item">
+			<view class="mraket-list" v-for="item in 15" :key="item" @click="openKlinePage('XRP'+ item)">
 				<view class="mraket-list-name">
 					<view class="list-name-1">XRP{{item}}</view>
 					<view class="list-name-2">24H ₹5.{{item}}1B</view>
@@ -39,7 +39,11 @@
 			}
 		},
 		methods: {
-
+			openKlinePage(value) {
+				uni.navigateTo({
+					url: '/pages/trde/kline/kline?name=' + value
+				})
+			}
 		}
 	}
 </script>
