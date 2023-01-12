@@ -50,7 +50,7 @@
 					Direct Subordinate
 				</view>
 			</view>
-			<view class="content-actions-item">
+			<view class="content-actions-item" @click="openUrl">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-4.png" mode="aspectFit" />
 				<view class="actions-item-name">
 					Online service
@@ -98,6 +98,9 @@
 				uni.navigateTo({
 					url: "/pages/index/direct/direct"
 				})
+			},
+			openUrl() {
+				window.open("https://t.me/renlishisan", "_blank");
 			},
 			goSettingsPage() {
 				uni.navigateTo({

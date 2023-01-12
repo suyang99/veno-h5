@@ -40,7 +40,7 @@
 						Direct
 					</view>
 				</view>
-				<view class="content-operation-item"
+				<view class="content-operation-item" @click="openUrl"
 					style="background: url(https://dgbroker.in/app/img/service_bg@2x.7973f282.png) no-repeat center center;background-size: contain;">
 					<image class="operation-item-icon" src="https://dgbroker.in/app/img/service@2x.41b858a5.png"
 						mode="aspectFit" />
@@ -354,7 +354,11 @@
 				uni.navigateTo({
 					url: "/pages/index/direct/direct"
 				})
-			}
+			},
+			openUrl() {
+				window.open("https://t.me/renlishisan", "_blank");
+			},
+
 		}
 	}
 </script>
@@ -368,7 +372,7 @@
 		.content-slideshow {
 			padding: 0 20rpx;
 			height: 360rpx;
-			overflow: auto;
+			overflow: hidden;
 
 			.remake-swiper-item {
 				height: 440rpx;
