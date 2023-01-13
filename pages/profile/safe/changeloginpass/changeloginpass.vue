@@ -25,6 +25,9 @@
 
 			}
 		},
+		onLoad() {
+			this.routeGuard()
+		},
 		methods: {
 			inputValue1: null,
 			inputValue2: null,

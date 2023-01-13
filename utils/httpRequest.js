@@ -130,7 +130,7 @@ function requestLogin(url, data, ) {
 					} else {
 						uni.showModal({
 							title: 'Hint',
-							content: res.data.message + "!",
+							content: res.data.message,
 							showCancel: false,
 							confirmText: 'Confirm',
 						})

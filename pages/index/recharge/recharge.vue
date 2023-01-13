@@ -65,6 +65,9 @@
 
 			}
 		},
+		onLoad() {
+			this.routeGuard()
+		},
 		methods: {
 			//快速选择充值金额
 			setRecharge(value) {

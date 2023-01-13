@@ -185,6 +185,7 @@
 			}
 		},
 		onLoad(option) {
+			this.routeGuard()
 			uni.setNavigationBarTitle({
 				title: option.name + '/USTD'
 			})

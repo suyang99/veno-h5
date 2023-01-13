@@ -284,6 +284,9 @@
 				navigator: 0
 			}
 		},
+		onLoad() {
+			this.routeGuard()
+		},
 		methods: {
 
 		}

@@ -69,7 +69,10 @@
 			}
 		},
 		onLoad(options) {
+			this.routeGuard()
 			this.money = options.money
+
+
 		},
 		methods: {
 			//复制链接

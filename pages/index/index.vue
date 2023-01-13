@@ -328,13 +328,7 @@
 			}
 		},
 		onLoad() {
-			if (uni.getStorageSync('token')) {
-
-			} else {
-				uni.redirectTo({
-					url: '/pages/login/login'
-				})
-			}
+			this.routeGuard()
 		},
 		methods: {
 			change(e) {

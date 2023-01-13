@@ -52,6 +52,9 @@
 				amount: 0
 			}
 		},
+		onLoad() {
+			this.routeGuard()
+		},
 		methods: {
 			goRecordsPage() {
 				uni.navigateTo({

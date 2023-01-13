@@ -14,6 +14,9 @@
 
 			}
 		},
+		onLoad() {
+			this.routeGuard()
+		},
 		methods: {
 			logOut() {
 				uni.removeStorageSync('token')

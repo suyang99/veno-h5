@@ -2,14 +2,16 @@ import App from './App'
 
 import {
 	requestLogin,
-	uniRequest
+	uniRequest,
 } from './utils/httpRequest.js';
 Vue.prototype.requestLogin = requestLogin;
 Vue.prototype.uniRequest = uniRequest;
 import {
-	formatDateTime
+	formatDateTime,
+	routeGuard
 } from './utils/utils.js'
 Vue.prototype.formatDateTime = formatDateTime;
+Vue.prototype.routeGuard = routeGuard
 
 // #ifndef VUE3
 import Vue from 'vue'

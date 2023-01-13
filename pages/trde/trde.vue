@@ -38,6 +38,9 @@
 
 			}
 		},
+		onLoad() {
+			this.routeGuard()
+		},
 		methods: {
 			openKlinePage(value) {
 				uni.navigateTo({

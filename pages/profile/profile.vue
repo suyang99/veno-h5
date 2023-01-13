@@ -73,6 +73,9 @@
 
 			}
 		},
+		onLoad() {
+			this.routeGuard()
+		},
 		methods: {
 			goPayoutPage() {
 				uni.navigateTo({

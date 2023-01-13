@@ -15,6 +15,19 @@ function formatDateTime(inputTime) {
 	return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
 };
 
+//简易路由守卫
+function routeGuard() {
+	if (uni.getStorageSync('token')) {
+
+	} else {
+		uni.redirectTo({
+			url: '/pages/login/login'
+		})
+	}
+}
+
+
 module.exports = {
-	formatDateTime
+	formatDateTime,
+	routeGuard
 }
