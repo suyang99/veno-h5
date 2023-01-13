@@ -20,8 +20,8 @@ function uniRequest(url, data, method = 'POST') {
 						//	请求成功！
 					} else if (res.data.code === 302) {
 						uni.showModal({
-							title: '提示',
-							content: res.data.msg,
+							title: 'Hint',
+							content: res.data.message,
 							showCancel: false,
 							success: function(_res) {
 								if (_res.confirm) {
@@ -41,10 +41,10 @@ function uniRequest(url, data, method = 'POST') {
 						});
 					} else if (res.data.code === 409) {
 						uni.showModal({
-							title: '提示',
-							content: '登录失效！',
+							title: 'Hint',
+							content: 'Login failure！',
 							showCancel: false,
-							confirmText: '重新登录',
+							confirmText: 'Again Login',
 							success: function(res) {
 								if (res.confirm) {
 									setTimeout(() => {
@@ -58,9 +58,10 @@ function uniRequest(url, data, method = 'POST') {
 					}
 				} else if (res.statusCode == 500) {
 					uni.showModal({
-						title: '提示',
-						content: '系统异常，请稍后再试！',
+						title: 'Hint',
+						content: 'The system is abnormal. Please try again later！',
 						showCancel: false,
+						confirmText: 'Confirm',
 						success: function(res) {
 							if (res.confirm) {
 
@@ -70,7 +71,7 @@ function uniRequest(url, data, method = 'POST') {
 				} else {
 					uni.showToast({
 						icon: 'none',
-						title: "网络连接失败！",
+						title: "Network connection failure！",
 						duration: 2000
 					})
 				}
@@ -79,7 +80,7 @@ function uniRequest(url, data, method = 'POST') {
 			fail(err) {
 				uni.showToast({
 					icon: 'none',
-					title: "网络连接失败！",
+					title: "Network connection failure！",
 					duration: 2000
 				})
 				reject(err)
@@ -99,7 +100,6 @@ function requestLogin(url, data, ) {
 			method: "POST",
 			header: {
 				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "*"
 			},
 			success(res) {
 				const resData = {
@@ -114,7 +114,7 @@ function requestLogin(url, data, ) {
 						uni.setStorageSync('token', res.data.data.token) //存储token
 						uni.showModal({
 							title: 'Hint',
-							content: res.data.msg,
+							content: res.data.message,
 							showCancel: false,
 							confirmText: 'Enter',
 							success: function(res) {
@@ -130,7 +130,7 @@ function requestLogin(url, data, ) {
 					} else {
 						uni.showModal({
 							title: 'Hint',
-							content: res.data.msg + "!",
+							content: res.data.message + "!",
 							showCancel: false,
 							confirmText: 'Confirm',
 						})
