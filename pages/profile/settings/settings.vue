@@ -16,7 +16,7 @@
 		},
 		methods: {
 			logOut() {
-				uni.removeStorageSync('ifLogin')
+				uni.removeStorageSync('token')
 				uni.redirectTo({
 					url: '/pages/login/login'
 				})

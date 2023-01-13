@@ -100,7 +100,7 @@
 				})
 			},
 			openUrl() {
-				window.open("https://t.me/renlishisan", "_blank");
+				window.open("https://t.me/graahaj001", "_blank");
 			},
 			goSettingsPage() {
 				uni.navigateTo({

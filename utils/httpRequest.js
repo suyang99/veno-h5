@@ -1,4 +1,4 @@
-const baseURL = 'https://api.aiitf.com/' //测试环境
+const baseURL = 'http://47.88.25.56:9000/' //测试环境
 
 /**
  * 接口请求封装
@@ -98,7 +98,8 @@ function requestLogin(url, data, ) {
 			data: data,
 			method: "POST",
 			header: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*"
 			},
 			success(res) {
 				const resData = {
@@ -110,13 +111,12 @@ function requestLogin(url, data, ) {
 					if (res.data.code === 0) {
 						resData.code = 0
 						//请求成功
-						uni.setStorageSync('token', res.data.data.userinfo.token) //存储token
-						uni.setStorageSync('userInfo', JSON.stringify(res.data.data.userinfo))
+						uni.setStorageSync('token', res.data.data.token) //存储token
 						uni.showModal({
-							title: '提示',
-							content: '登录成功！',
+							title: 'Hint',
+							content: res.data.msg,
 							showCancel: false,
-							confirmText: '进入首页',
+							confirmText: 'Enter',
 							success: function(res) {
 								if (res.confirm) {
 									setTimeout(() => {
@@ -129,15 +129,16 @@ function requestLogin(url, data, ) {
 						});
 					} else {
 						uni.showModal({
-							title: '提示',
+							title: 'Hint',
 							content: res.data.msg + "!",
-							showCancel: false
+							showCancel: false,
+							confirmText: 'Confirm',
 						})
 					}
 				} else {
 					uni.showModal({
-						title: '提示',
-						content: "登录遇到了一点问题，请检查网络后重新进入小程序！",
+						title: 'Hint',
+						content: "Network exception！",
 						showCancel: false
 					})
 					resData.code = 10001

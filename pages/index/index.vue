@@ -328,7 +328,7 @@
 			}
 		},
 		onLoad() {
-			if (uni.getStorageSync('ifLogin')) {
+			if (uni.getStorageSync('token')) {
 
 			} else {
 				uni.redirectTo({

@@ -16,11 +16,11 @@
 			</view>
 			<view class="login-card-input" v-show="activeTab == 0">
 				<view class="recharge-input">
-					<uni-easyinput type="text" v-model="login.inputValue1" placeholder="Mobile phone number"
+					<uni-easyinput type="text" v-model="login.mobile" placeholder="Mobile phone number"
 						:inputBorder='false' :clearable="false" />
 				</view>
 				<view class="recharge-input">
-					<uni-easyinput type="text" v-model="login.inputValue2" placeholder="Password" :inputBorder='false'
+					<uni-easyinput type="password" v-model="login.password" placeholder="Password" :inputBorder='false'
 						:clearable="false" />
 				</view>
 				<view class="content-pay" @click="loginFn">
@@ -29,26 +29,26 @@
 			</view>
 			<view class="login-card-input" v-show="activeTab == 1">
 				<view class="recharge-input">
-					<uni-easyinput type="text" v-model="login.inputValue1" placeholder="Mobile phone number"
+					<uni-easyinput type="text" v-model="register.mobile" placeholder="Mobile phone number"
 						:inputBorder='false' :clearable="false" />
 				</view>
 				<view class="recharge-input">
-					<uni-easyinput type="text" v-model="login.inputValue2" placeholder="Full Name" :inputBorder='false'
+					<uni-easyinput type="text" v-model="register.full_name" placeholder="Full Name" :inputBorder='false'
 						:clearable="false" />
 				</view>
 				<view class="recharge-input">
-					<uni-easyinput type="text" v-model="login.inputValue3" placeholder="Password" :inputBorder='false'
+					<uni-easyinput type="text" v-model="register.password" placeholder="Password" :inputBorder='false'
 						:clearable="false" />
 				</view>
 				<view class="recharge-input">
-					<uni-easyinput type="text" v-model="login.inputValue4" placeholder="Invitation code"
+					<uni-easyinput type="text" v-model="register.invitation_code" placeholder="Invitation code"
 						:inputBorder='false' :clearable="false" />
 				</view>
 				<view class="recharge-input">
-					<uni-easyinput type="text" v-model="login.inputValue5" placeholder="Email" :inputBorder='false'
+					<uni-easyinput type="text" v-model="register.email" placeholder="Email" :inputBorder='false'
 						:clearable="false" />
 				</view>
-				<view class="content-pay" @click="loginFn">
+				<view class="content-pay" @click="registerFn">
 					Sign Up
 				</view>
 			</view>
@@ -61,26 +61,27 @@
 	export default {
 		data() {
 			return {
-				activeTab: 0,
+				activeTab: 1,
 				login: {
-					inputValue1: null,
-					inputValue2: null
+					mobile: null,
+					password: null
 				},
-				signUp: {
-					inputValue1: null,
-					inputValue2: null,
-					inputValue3: null,
-					inputValue4: null,
-					inputValue5: null
+				register: {
+					mobile: null,
+					full_name: null,
+					email: null,
+					password: null,
+					invitation_code: null
 				}
 			}
 		},
 		methods: {
 			loginFn() {
-				uni.setStorageSync('ifLogin', true);
-				uni.switchTab({
-					url: "/pages/index/index"
-				})
+				this.requestLogin('user/login', this.login)
+			},
+			registerFn() {
+				console.log('hi')
+				this.requestLogin('user/register', this.register)
 			}
 		}
 	}
