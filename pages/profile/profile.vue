@@ -6,10 +6,10 @@
 					<image src="https://dgbroker.in/app/img/face@2x.47568f54.png" class="card-user-photo" mode="" />
 					<view class="card-user-info">
 						<view class="user-info-name">
-							Hi,yumen
+							Hi，{{userInfo.full_name}}
 						</view>
 						<view class="user-info-uid">
-							UID:001839
+							UID：{{userInfo.id}}
 						</view>
 					</view>
 				</view>
@@ -18,7 +18,7 @@
 						Balance
 					</view>
 					<view class="card-balance-funds">
-						₹95.00
+						₹{{accountBalance}}
 					</view>
 					<view class="card-balance-black">
 						<view class="balance-black-btm" @click="goPayoutPage">
@@ -38,12 +38,12 @@
 					Exchange Record
 				</view>
 			</view>
-			<view class="content-actions-item" @click="goSafePage">
+			<!-- <view class="content-actions-item" @click="goSafePage">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-2.png" mode="aspectFit" />
 				<view class="actions-item-name">
 					Security
 				</view>
-			</view>
+			</view> -->
 			<view class="content-actions-item" @click="goDirectPage">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-3.png" mode="aspectFit" />
 				<view class="actions-item-name">
@@ -70,13 +70,41 @@
 	export default {
 		data() {
 			return {
-
+				userInfo: {
+					id: "",
+					parent_id: "",
+					sales_id: "",
+					username: "",
+					full_name: "",
+					mobile: "",
+					email: "",
+					last_login: "",
+					login_times: "",
+					invitation_code: "",
+					created_at: "",
+					updated_at: ""
+				},
+				accountBalance: 0.00
 			}
 		},
 		onLoad() {
 			this.routeGuard()
+			this.getUserInfo()
+		},
+		onShow() {
+			this.getAccountBalance()
 		},
 		methods: {
+			getUserInfo() {
+				this.uniRequest('user/info', {}, 'GET').then((res) => {
+					this.userInfo = res.data
+				})
+			},
+			getAccountBalance() {
+				this.uniRequest('user/account/balance', {}, 'GET').then((res) => {
+					this.accountBalance = res.data.balance
+				})
+			},
 			goPayoutPage() {
 				uni.navigateTo({
 					url: '/pages/index/payout/payout'
@@ -87,11 +115,11 @@
 					url: '/pages/index/recharge/recharge'
 				})
 			},
-			goSafePage() {
-				uni.navigateTo({
-					url: '/pages/profile/safe/safe'
-				})
-			},
+			// goSafePage() {
+			// 	uni.navigateTo({
+			// 		url: '/pages/profile/safe/safe'
+			// 	})
+			// },
 			goRecodsPage() {
 				uni.navigateTo({
 					url: '/pages/profile/recods/recods'

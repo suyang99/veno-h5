@@ -1,18 +1,18 @@
 <template>
 	<view class="content">
 		<view class="recharge-input">
-			<uni-easyinput type="number" v-model="inputValue1" placeholder="Old Password" :inputBorder='false'
-				:clearable="false" />
+			<uni-easyinput type="number" v-model="inputValue.old_password" placeholder="Old Password"
+				:inputBorder='false' :clearable="false" />
 		</view>
 		<view class="recharge-input">
-			<uni-easyinput type="number" v-model="inputValue2" placeholder="New Password" :inputBorder='false'
-				:clearable="false" />
+			<uni-easyinput type="number" v-model="inputValue.new_password" placeholder="New Password"
+				:inputBorder='false' :clearable="false" />
 		</view>
 		<view class="recharge-input">
-			<uni-easyinput type="number" v-model="inputValue3" placeholder="Confirm Password" :inputBorder='false'
-				:clearable="false" />
+			<uni-easyinput type="number" v-model="inputValue.new_password2" placeholder="Confirm Password"
+				:inputBorder='false' :clearable="false" />
 		</view>
-		<view class="content-pay" @click="">
+		<view class="content-pay" @click="resetPassword">
 			Submit
 		</view>
 	</view>
@@ -22,6 +22,11 @@
 	export default {
 		data() {
 			return {
+				inputValue: {
+					old_password: null,
+					new_password: null,
+					new_password2: null
+				}
 
 			}
 		},
@@ -29,9 +34,36 @@
 			this.routeGuard()
 		},
 		methods: {
-			inputValue1: null,
-			inputValue2: null,
-			inputValue3: null
+			resetPassword() {
+				if (this.inputValue !== null && this.inputValue.new_password === this.inputValue.new_password2) {
+					this.uniRequest('user/reset_password', this.inputValue).then((res) => {
+						uni.showModal({
+							title: 'Hint',
+							content: res.message,
+							showCancel: false,
+							confirmText: 'Confirm',
+							success: function(_res) {
+								if (_res.confirm) {
+									uni.switchTab({
+										url: "/pages/profile/profile"
+									})
+								}
+							}
+						});
+					})
+				} else {
+					uni.showModal({
+						title: 'Hint',
+						content: "Two passwords do not match！",
+						showCancel: false,
+						confirmText: 'Confirm',
+						success: function(res) {
+
+						}
+					});
+				}
+
+			}
 		}
 	}
 </script>

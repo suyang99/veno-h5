@@ -331,6 +331,9 @@
 			this.routeGuard()
 		},
 		methods: {
+			getCommonSettings() {
+
+			},
 			change(e) {
 				this.current = e.detail.current;
 			},

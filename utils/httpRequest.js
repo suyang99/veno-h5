@@ -12,46 +12,38 @@ function uniRequest(url, data, method = 'POST') {
 			method: method,
 			header: {
 				"Content-Type": "application/json",
-				"ba-user-token": token ? token : ''
+				"token": token ? token : ''
 			},
 			success(res) {
 				if (res.statusCode == 200) {
 					if (res.data.code === 0) {
 						//	请求成功！
-					} else if (res.data.code === 302) {
+					} else if (res.data.code === 204) {
 						uni.showModal({
 							title: 'Hint',
 							content: res.data.message,
-							showCancel: false,
-							success: function(_res) {
-								if (_res.confirm) {
-									if (res.data.data.routePath === "/user") {
-										uni.switchTab({
-											url: "/pages/index/index"
-										})
-									} else {
-										uni.removeStorageSync("userInfo")
-										uni.removeStorageSync("token")
-										uni.reLaunch({
-											url: "/pages/login/login"
-										})
-									}
-								}
-							}
-						});
-					} else if (res.data.code === 409) {
-						uni.showModal({
-							title: 'Hint',
-							content: 'Login failure！',
 							showCancel: false,
 							confirmText: 'Again Login',
 							success: function(res) {
 								if (res.confirm) {
 									setTimeout(() => {
+										uni.removeStorageSync("token")
 										uni.reLaunch({
 											url: "/pages/login/login"
 										})
 									}, 1000)
+								}
+							}
+						});
+					} else {
+						uni.showModal({
+							title: 'Hint',
+							content: res.data.message,
+							showCancel: false,
+							confirmText: 'Confirm',
+							success: function(res) {
+								if (res.confirm) {
+
 								}
 							}
 						});
