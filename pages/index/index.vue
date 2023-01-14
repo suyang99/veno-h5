@@ -1,13 +1,12 @@
 <template>
 	<view class="content">
 		<view class="content-slideshow">
-			<uni-swiper-dot :info="[0,1]" :current="current" field="content" mode="round" :dots-styles="dotsStyles">
+			<uni-swiper-dot :info="settings.banner" :current="current" field="content" mode="round"
+				:dots-styles="dotsStyles">
 				<swiper @change="change" class="remake-swiper-item">
-					<swiper-item>
-						<image class="swiper-item" src="../../static/index/slideshow-1.jpeg" mode="widthFix" />
-					</swiper-item>
-					<swiper-item>
-						<image class="swiper-item" src="../../static/index/slideshow-1.jpeg" mode="widthFix" />
+					<swiper-item v-for="(item,index) in settings.banner" :key="index">
+						<image class="swiper-item" :src="item.image" @click="openUrl(item.image_route)"
+							mode="widthFix" />
 					</swiper-item>
 				</swiper>
 			</uni-swiper-dot>
@@ -40,7 +39,7 @@
 						Direct
 					</view>
 				</view>
-				<view class="content-operation-item" @click="openUrl"
+				<view class="content-operation-item" @click="openUrl(settings.online_service)"
 					style="background: url(https://dgbroker.in/app/img/service_bg@2x.7973f282.png) no-repeat center center;background-size: contain;">
 					<image class="operation-item-icon" src="https://dgbroker.in/app/img/service@2x.41b858a5.png"
 						mode="aspectFit" />
@@ -93,29 +92,51 @@
 					selectedBorder: '1px rgba(83, 200, 249,0.9) solid'
 				},
 				commonalityWindow: false,
-				noticeContent: `<h1>
-						<strong><u>Dear DG-Broker users:</u></strong>
-					</h1>
-					<p>From January 06, 2023, as determined by the headquarters, in order to provide users with
-						better services and benefits, the DG-Broker platform will adjust the minimum recharge amount
-						from<span style="color: rgb(230, 0, 0);"> 2,000 </span>rupees to <span
-							style="color: rgb(230, 0, 0);">5,000</span> rupees. While increasing the transaction
-						volume, it can also ensure that all users can obtain higher and more stable income. Thanks
-						for your support!</p>
-					<p><br></p>
-					<p>21:30-8:30 every night does not support personal transactions</p>
-					<p><br></p>
-					<h2><strong><u>.January 05, 2023</u></strong></h2>
-					<h2>Official announcement of DG-Broker platform</h2>`
+				settings: {
+					banner: [],
+					notice: null,
+					online_service: null,
+					recharge_limit: {
+						max: null,
+						min: null
+					},
+					site_domain: null,
+					site_logo: "",
+					site_name: "",
+				},
+				noticeContent: ''
 			}
 		},
 		onLoad() {
 			this.routeGuard();
-			this.switchCommonalityWindow()
+			// this.getNotice()
+			this.getSettingsFn()
 		},
 		methods: {
 			getCommonSettings() {
 
+			},
+			getNotice(value) {
+				this.uniRequest('common/notice?id=' + value, {}, 'GET').then((res) => {
+					if (res.code === 0) {
+						this.noticeContent = res.data.content;
+						this.switchCommonalityWindow()
+					}
+				})
+			},
+			getSettingsFn() {
+				this.uniRequest('common/settings', {}, 'GET').then((res) => {
+					console.log(res)
+					if (res.code === 0) {
+						this.settings = res.data
+						if (res.data.notice) {
+							this.getNotice(res.data.notice)
+						}
+						uni.setNavigationBarTitle({
+							title: res.data.site_name
+						})
+					}
+				})
 			},
 			switchCommonalityWindow() {
 				this.commonalityWindow = !this.commonalityWindow
@@ -125,7 +146,7 @@
 			},
 			goRechargePage() {
 				uni.navigateTo({
-					url: '/pages/index/recharge/recharge',
+					url: `/pages/index/recharge/recharge?max=${this.settings.recharge_limit.max}&min=${this.settings.recharge_limit.min}`,
 				})
 			},
 			goPayoutPage() {
@@ -138,8 +159,8 @@
 					url: "/pages/index/direct/direct"
 				})
 			},
-			openUrl() {
-				window.open("https://t.me/renlishisan", "_blank");
+			openUrl(url) {
+				window.open(url, "_blank");
 			},
 
 		}

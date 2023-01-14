@@ -4,7 +4,7 @@
 			<view class="content-available-key">Available Balance</view>
 			<view class="content-available-value">
 				₹
-				<text style="font-weight: 700;">95</text>
+				<text style="font-weight: 700;">{{accountBalance}}</text>
 			</view>
 		</view>
 		<view class="content-recharge">
@@ -62,22 +62,51 @@
 		data() {
 			return {
 				recharge: 2000,
+				accountBalance: 0.00,
+				limit: {
+					max: null,
+					min: null
+				},
 
 			}
 		},
-		onLoad() {
+		onLoad(op) {
 			this.routeGuard()
+			this.limit = {
+				max: op.max,
+				min: op.min
+			}
+		},
+		onShow() {
+			this.getAccountBalance()
 		},
 		methods: {
+			getAccountBalance() {
+				this.uniRequest('user/account/balance', {}, 'GET').then((res) => {
+					this.accountBalance = res.data.balance
+				})
+			},
 			//快速选择充值金额
 			setRecharge(value) {
 				this.recharge = value
 			},
 			// 去往转载页面
 			goBankTransferPage() {
-				uni.navigateTo({
-					url: '/pages/index/recharge/bank_transfer/bank_transfer?money=' + this.recharge
-				})
+				if (this.recharge < this.limit.min || this.recharge > this.limit.max) {
+					uni.showModal({
+						title: 'Hint',
+						content: `Maximum limit：${this.limit.max},Maximum limit：${this.limit.min}.`,
+						showCancel: false,
+						confirmText: 'Enter',
+						success: function(res) {
+
+						}
+					});
+				} else {
+					uni.navigateTo({
+						url: '/pages/index/recharge/bank_transfer/bank_transfer?money=' + this.recharge
+					})
+				}
 			}
 		}
 	}

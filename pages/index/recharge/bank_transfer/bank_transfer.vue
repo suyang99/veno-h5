@@ -18,7 +18,7 @@
 					UPI:
 				</view>
 				<view class="bank-info-value" style="color: #c70b0b;">
-					kushalshetty007@axl
+					{{dueBank.upi}}
 				</view>
 			</view>
 		</view>
@@ -31,7 +31,7 @@
 					Holder Name:
 				</view>
 				<view class="bank-info-value">
-					kushal shetty N
+					{{dueBank.account_name}}
 				</view>
 			</view>
 			<view class="content-bank-info" @click="copyText('50100346825411')">
@@ -39,7 +39,7 @@
 					Account no:
 				</view>
 				<view class="bank-info-value">
-					50100346825411
+					{{dueBank.account_num}}
 				</view>
 			</view>
 			<view class="content-bank-info" @click="copyText('HDFC0009413')">
@@ -47,11 +47,11 @@
 					IFSC:
 				</view>
 				<view class="bank-info-value">
-					HDFC0009413
+					{{dueBank.ifsc}}
 				</view>
 			</view>
 		</view>
-		<view class="content-pay" @click="">
+		<view class="content-pay" @click="openUrl(onlineService)">
 			Sending screenshots
 		</view>
 		<view class="content-note">
@@ -65,16 +65,28 @@
 	export default {
 		data() {
 			return {
-				money: 0
+				money: 0,
+				dueBank: {
+					account_name: '',
+					account_num: '',
+					ifsc: '',
+					upi: ''
+				},
+				onlineService: ''
 			}
 		},
 		onLoad(options) {
-			this.routeGuard()
 			this.money = options.money
-
-
+			this.routeGuard()
+			this.getAccount()
 		},
 		methods: {
+			getAccount() {
+				this.uniRequest('common/settings', {}, 'GET').then((res) => {
+					this.dueBank = res.data.due_bank,
+						this.onlineService = res.data.online_service
+				})
+			},
 			//复制链接
 			copyText(value) {
 				uni.setClipboardData({
@@ -94,6 +106,9 @@
 						});
 					}
 				});
+			},
+			openUrl(url) {
+				window.open(url, "_blank");
 			},
 		}
 	}
