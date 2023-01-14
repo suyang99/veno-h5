@@ -103,14 +103,16 @@
 					site_domain: null,
 					site_logo: "",
 					site_name: "",
+					withdraw_charge: '',
 				},
 				noticeContent: ''
 			}
 		},
 		onLoad() {
-			this.routeGuard();
-			// this.getNotice()
-			this.getSettingsFn()
+			if (this.routeGuard()) {
+				this.getSettingsFn()
+			}
+
 		},
 		methods: {
 			getCommonSettings() {
@@ -151,7 +153,7 @@
 			},
 			goPayoutPage() {
 				uni.navigateTo({
-					url: '/pages/index/payout/payout'
+					url: '/pages/index/payout/payout?withdrawCharge=' + this.settings.withdraw_charge
 				})
 			},
 			goDirectPage() {

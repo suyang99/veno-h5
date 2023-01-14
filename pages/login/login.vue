@@ -61,7 +61,7 @@
 	export default {
 		data() {
 			return {
-				activeTab: 1,
+				activeTab: 0,
 				login: {
 					mobile: null,
 					password: null
@@ -89,19 +89,21 @@
 
 <style lang="scss">
 	.content {
-		height: 100vh;
-		padding: 40rpx;
+		position: fixed;
+		height: 100%;
+		width: 100%;
 		background-image: linear-gradient(1turn, #4396f4, #a4cdfc);
 		background-size: contain;
 
 		.login-logo {
 			width: 150rpx;
 			height: 150rpx;
-			margin: 20rpx 0;
+			margin-top: 40rpx;
 		}
 
 		.login-card {
 			padding: 50rpx;
+			margin: 20rpx 40rpx;
 			border-radius: 20rpx;
 			background: #ffffff;
 
