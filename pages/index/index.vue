@@ -65,6 +65,17 @@
 				</swiper>
 			</view>
 		</view>
+		<view class="commonality-window" v-if="commonalityWindow">
+			<view class="commonality-window-card">
+				<view class="window-card-header">
+					Notice
+				</view>
+				<rich-text class="window-card-content" :nodes="noticeContent" />
+				<view class="window-card-btn" @click="switchCommonalityWindow">
+					Confirm
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -80,15 +91,34 @@
 					bottom: "60",
 					selectedBackgroundColor: 'rgba(83, 200, 249,0.9)',
 					selectedBorder: '1px rgba(83, 200, 249,0.9) solid'
-				}
+				},
+				commonalityWindow: false,
+				noticeContent: `<h1>
+						<strong><u>Dear DG-Broker users:</u></strong>
+					</h1>
+					<p>From January 06, 2023, as determined by the headquarters, in order to provide users with
+						better services and benefits, the DG-Broker platform will adjust the minimum recharge amount
+						from<span style="color: rgb(230, 0, 0);"> 2,000 </span>rupees to <span
+							style="color: rgb(230, 0, 0);">5,000</span> rupees. While increasing the transaction
+						volume, it can also ensure that all users can obtain higher and more stable income. Thanks
+						for your support!</p>
+					<p><br></p>
+					<p>21:30-8:30 every night does not support personal transactions</p>
+					<p><br></p>
+					<h2><strong><u>.January 05, 2023</u></strong></h2>
+					<h2>Official announcement of DG-Broker platform</h2>`
 			}
 		},
 		onLoad() {
-			this.routeGuard()
+			this.routeGuard();
+			this.switchCommonalityWindow()
 		},
 		methods: {
 			getCommonSettings() {
 
+			},
+			switchCommonalityWindow() {
+				this.commonalityWindow = !this.commonalityWindow
 			},
 			change(e) {
 				this.current = e.detail.current;
@@ -207,6 +237,59 @@
 					}
 				}
 
+			}
+		}
+
+		.commonality-window {
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 2000;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: rgba(0, 0, 0, .7);
+
+			.commonality-window-card {
+				width: 85%;
+				height: 80%;
+				border-radius: 10rpx;
+				background-color: white;
+
+				.window-card-header {
+					text-align: center;
+					font-size: 36rpx;
+					color: #ed662c;
+					padding: 36rpx;
+					border-bottom: 1px solid #f2f2f2;
+					font-weight: 700;
+				}
+
+				.window-card-content {
+					overflow: scroll;
+					height: 70%;
+					padding: 20rpx 30rpx;
+
+					h1,
+					h2,
+					p {
+						margin: 20rpx;
+					}
+				}
+
+				.window-card-btn {
+					background: #ed662c;
+					display: block;
+					padding: 20rpx;
+					text-align: center;
+					border-radius: 20rpx;
+					color: #fff;
+					font-size: 40rpx;
+					font-weight: 700;
+					margin: 40rpx;
+				}
 			}
 		}
 	}
