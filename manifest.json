@@ -79,7 +79,7 @@
 				"enable": true
 			}
 		},
-		"title": "Veno Broker",
+		"title": "loading...",
 		"devServer": {
 			"disableHostCheck": true, //设置跳过host检查
 			"proxy": {
