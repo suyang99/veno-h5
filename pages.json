@@ -101,6 +101,13 @@
 
 			}
 
+		}, {
+			"path": "pages/index/payout/bind_card/bind_card",
+			"style": {
+				"navigationBarTitleText": "Bind bank card",
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {

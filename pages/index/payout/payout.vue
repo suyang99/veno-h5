@@ -1,14 +1,14 @@
 <template>
 	<view class="content">
-		<view class="content-records" @click="goRecordsPage">
+		<!-- <view class="content-records" @click="goRecordsPage">
 			Records
-		</view>
+		</view> -->
 		<view class="content-balance">
 			<view class="content-balance-key">
 				Available Balance:
 			</view>
 			<view class="content-balance-value">
-				₹ 95.00
+				₹ {{accountBalance}}
 			</view>
 		</view>
 		<view class="recharge-input">
@@ -19,7 +19,7 @@
 				Taxs:
 			</view>
 			<view class="content-balance-value">
-				₹ 0.18
+				₹ {{(amount /100 * withdrawCharge).toFixed(2)}}
 			</view>
 		</view>
 		<view class="content-balance content-balance2">
@@ -27,7 +27,7 @@
 				Total Amount:
 			</view>
 			<view class="content-balance-value">
-				₹ 1.18
+				₹ {{Number((amount /100 * withdrawCharge).toFixed(2))+Number(amount)}}
 			</view>
 		</view>
 		<view class="content-bankitem">
@@ -36,10 +36,10 @@
 		<view class="content-note">
 			<image class="content-note-icon" src="../../../static/index/note-icon.png" mode="aspectFit" />
 			<view class="content-note-text">
-				Withdrawal charges 20% Taxs, withdraw time Monday-Friday 7am-9am
+				Withdrawal charges {{withdrawCharge}}% Taxs, withdraw time Monday-Friday 7am-9am
 			</view>
 		</view>
-		<view class="content-pay">
+		<view class="content-pay" @click="goRecordsPage">
 			Submit
 		</view>
 	</view>
@@ -49,13 +49,43 @@
 	export default {
 		data() {
 			return {
-				amount: 0
+				amount: 0,
+				accountBalance: 0.00,
+				withdrawCharge: 0,
+				account: {
+					bank: []
+				}
 			}
 		},
-		onLoad() {
-			this.routeGuard()
+		onLoad(options) {
+			this.withdrawCharge = Number(options.withdrawCharge)
+			this.getAccount()
 		},
 		methods: {
+			getAccountBalance() {
+				this.uniRequest('user/account/balance', {}, 'GET').then((res) => {
+					this.accountBalance = res.data.balance
+				})
+			},
+			getAccount() {
+				this.uniRequest('user/account/info', {}, 'GET').then((res) => {
+					this.account = res.data
+					if (this.account.bank.length === 0) {
+						uni.showModal({
+							content: "Please bind the withdrawal bank card first",
+							showCancel: false,
+							confirmText: 'Enter',
+							success: function(res) {
+								if (res.confirm) {
+									uni.navigateTo({
+										url: '/pages/index/payout/bind_card/bind_card'
+									})
+								}
+							}
+						});
+					}
+				})
+			},
 			goRecordsPage() {
 				uni.navigateTo({
 					url: '/pages/index/payout/records/records'

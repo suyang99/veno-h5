@@ -24,10 +24,13 @@
 		},
 		methods: {
 			logOut() {
-				uni.removeStorageSync('token')
-				uni.redirectTo({
-					url: '/pages/login/login'
+				this.uniRequest('user/logout', {}, 'GET').then((res) => {
+					uni.removeStorageSync('token')
+					uni.redirectTo({
+						url: '/pages/login/login'
+					})
 				})
+
 			},
 			goChangeloginpassPage() {
 				uni.navigateTo({
