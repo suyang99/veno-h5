@@ -83,8 +83,8 @@
 		methods: {
 			getAccount() {
 				this.uniRequest('common/settings', {}, 'GET').then((res) => {
-					this.dueBank = res.data.due_bank,
-						this.onlineService = res.data.online_service
+					this.dueBank = res.data.due_bank
+					this.onlineService = res.data.online_service
 				})
 			},
 			//复制链接

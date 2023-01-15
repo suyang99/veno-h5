@@ -32,16 +32,10 @@
 			</view>
 		</view>
 		<view class="content-actions">
-			<view class="content-actions-item" @click="goWithdrawPage">
-				<image class="actions-item-icon" src="../../static/wallet/actions-icon-1.png" mode="aspectFit" />
-				<view class="actions-item-name">
-					withdraw Record
-				</view>
-			</view>
 			<view class="content-actions-item" @click="goRecodsPage">
 				<image class="actions-item-icon" src="../../static/wallet/actions-icon-1.png" mode="aspectFit" />
 				<view class="actions-item-name">
-					Exchange Record
+					Record
 				</view>
 			</view>
 			<!-- <view class="content-actions-item" @click="goSafePage">
@@ -114,11 +108,6 @@
 			goPayoutPage() {
 				uni.navigateTo({
 					url: '/pages/index/payout/payout'
-				})
-			},
-			goWithdrawPage() {
-				uni.navigateTo({
-					url: '/pages/index/payout/records/records'
 				})
 			},
 			goRechargePage() {

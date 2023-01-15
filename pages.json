@@ -40,13 +40,6 @@
 				"enablePullDownRefresh": false
 			}
 		}, {
-			"path": "pages/index/payout/records/records",
-			"style": {
-				"navigationBarTitleText": "Recharge and withdrawal records",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
 			"path": "pages/index/direct/direct",
 			"style": {
 				"navigationBarTitleText": "DIRECT SUBORDINATE",
@@ -105,6 +98,20 @@
 			"path": "pages/index/payout/bind_card/bind_card",
 			"style": {
 				"navigationBarTitleText": "Bind bank card",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/profile/recods/exchange/exchange",
+			"style": {
+				"navigationBarTitleText": "Records",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/profile/recods/capital/capital",
+			"style": {
+				"navigationBarTitleText": "Records",
 				"enablePullDownRefresh": false
 			}
 

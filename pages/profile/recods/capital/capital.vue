@@ -1,0 +1,116 @@
+<template>
+	<view class="content">
+		<view class="content-list">
+			<view class="list-item" v-for="(item,index) in dataList" :key="index">
+				<view class="list-item-black">
+					<view class="item-black-key">
+						Amount
+					</view>
+					<view class="item-black-value">
+						₹{{item.amount}}
+					</view>
+				</view>
+				<view class="list-item-black">
+					<view class="item-black-key">
+						Status
+					</view>
+					<view class="item-black-value2">
+						{{item.status === 2 ?"Finish" : "Unpaid"}}
+					</view>
+				</view>
+				<view class="list-item-black" style="text-align: right;">
+					<view class="item-black-key">
+						Time
+					</view>
+					<view class="item-black-value3">
+						{{item.updated_at}}
+					</view>
+				</view>
+			</view>
+			<view class="content-list-nomare">
+				- No more -
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				dataList: []
+			}
+		},
+		onLoad(op) {
+			this.routeGuard()
+			this.getAccountList(op.type)
+		},
+		methods: {
+			getAccountList(value) {
+				let url = `user/account/record?type=${value}`
+				this.uniRequest(url, {}, 'GET')
+					.then((res) => {
+						res.data.list.map(item => item.updated_at = this.formatDateTime(item.updated_at))
+
+						this.dataList = res.data.list
+					})
+			},
+		}
+	}
+</script>
+
+<style lang="scss">
+	.content {
+		height: 100%;
+		background: #f6f7f9;
+
+
+		.content-list {
+			height: 100%;
+			background-color: #ffffff;
+
+			.list-item {
+				padding: 24rpx 18rpx;
+				border-bottom: 1px solid #f5f7f8;
+
+				.list-item-black {
+					width: 33.33%;
+					display: inline-block;
+
+					.item-black-key {
+						font-size: 22rpx;
+						font-weight: 500;
+						padding: 4rpx 0;
+						color: #9d9e9e;
+					}
+
+					.item-black-value {
+						font-size: 30rpx;
+						color: #000;
+						font-weight: 700;
+					}
+
+					.item-black-value2 {
+						font-size: 30rpx;
+						color: #767777;
+						font-weight: 700;
+					}
+
+					.item-black-value3 {
+						font-size: 20rpx;
+						color: #000;
+						font-weight: 700;
+					}
+				}
+			}
+
+			.content-list-nomare {
+				color: #969799;
+				font-size: 28rpx;
+				line-height: 100rpx;
+				text-align: center;
+			}
+		}
+
+	}
+</style>

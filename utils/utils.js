@@ -18,11 +18,12 @@ function formatDateTime(inputTime) {
 //简易路由守卫
 function routeGuard() {
 	if (uni.getStorageSync('token')) {
-
+		return true
 	} else {
 		uni.redirectTo({
 			url: '/pages/login/login'
 		})
+		return false
 	}
 }
 
