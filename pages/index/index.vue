@@ -56,10 +56,18 @@
 			<view class="content-widhraw-log">
 				<swiper circular="true" vertical="true" interval="1500" display-multiple-items="4" autoplay="true"
 					class="mq">
-					<swiper-item class="item" v-for="item in 10" :key="item">
-						<view class="item-li">MS Yashaswini{{item}} </view>
-						<view class="item-li">600</view>
-						<view class="item-li" style="text-align: right; padding-right: 20rpx;">Succeed</view>
+					<swiper-item v-if="accountDataList.length > 0" class="item" v-for="(item,index) in accountDataList"
+						:key="index">
+						<view class="item-li" style="text-align: left;padding-left: 20rpx;">{{item.full_name}}</view>
+						<view class="item-li">₹{{item.amount}}</view>
+						<view class="item-li" style="text-align: right; padding-right: 20rpx;">
+							{{item.status === 1 ?"Unpaid" : item.status === 2 ? "Finish" : "Reject"}}
+						</view>
+					</swiper-item>
+					<swiper-item v-if="accountDataList.length === 0" class="item">
+						<view class="" style="text-align: center;">
+							- No more -
+						</view>
 					</swiper-item>
 				</swiper>
 			</view>
@@ -108,14 +116,15 @@
 					withdraw_charge: '',
 					withdraw_limit: ''
 				},
-				noticeContent: ''
+				noticeContent: '',
+				accountDataList: []
 			}
 		},
 		onLoad() {
 			if (this.routeGuard()) {
 				this.getSettingsFn()
+				this.getAccountList()
 			}
-
 		},
 		methods: {
 			getCommonSettings() {
@@ -141,6 +150,12 @@
 							title: res.data.site_name
 						})
 					}
+				})
+			},
+			getAccountList() {
+				let url = `common/withdraw`
+				this.uniRequest(url, {}, 'GET').then((res) => {
+					this.accountDataList = res.data
 				})
 			},
 			switchCommonalityWindow() {

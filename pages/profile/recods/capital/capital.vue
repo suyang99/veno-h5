@@ -15,7 +15,7 @@
 						Status
 					</view>
 					<view class="item-black-value2">
-						{{item.status === 2 ?"Finish" : "Unpaid"}}
+						{{item.status === 1 ?"Unpaid" : item.status === 2 ? "Finish" : "Reject"}}
 					</view>
 				</view>
 				<view class="list-item-black" style="text-align: right;">
@@ -51,7 +51,6 @@
 				this.uniRequest(url, {}, 'GET')
 					.then((res) => {
 						res.data.list.map(item => item.updated_at = this.formatDateTime(item.updated_at))
-
 						this.dataList = res.data.list
 					})
 			},
