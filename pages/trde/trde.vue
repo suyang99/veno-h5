@@ -13,7 +13,7 @@
 		</view>
 		<view class="mraket-content">
 			<view class="mraket-list" v-for="(item,index) in tradeGoodsList" :key="index"
-				@click="openKlinePage(item.name)">
+				@click="openKlinePage(item.name,item.id)">
 				<view class="mraket-list-name">
 					<view class="list-name-1">{{item.name}}</view>
 					<view class="list-name-2">24H ₹{{item.vol.toFixed(2)}} B</view>
@@ -69,7 +69,7 @@
 				this.tradeGoodsList[updateValue1].close = formerAmount.toFixed(6)
 				this.tradeGoodsList[updateValue1].change = randomNumber.toFixed(2)
 				uni.setStorageSync('tradeGoodsList', this.tradeGoodsList)
-
+				console.log('🐞')
 				setTimeout(() => {
 					this.SetTradeGood()
 				}, 3000)
@@ -97,9 +97,9 @@
 					}
 				})
 			},
-			openKlinePage(value) {
+			openKlinePage(name, id) {
 				uni.navigateTo({
-					url: '/pages/trde/kline/kline?name=' + value
+					url: `/pages/trde/kline/kline?name=${name}&id=${id}`
 				})
 			}
 		}

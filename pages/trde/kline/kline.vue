@@ -128,7 +128,7 @@
 		},
 		data() {
 			return {
-				webTitle: '',
+				activeId: '',
 				activeNav: 0,
 				inputValue: 0,
 				activeClose: '',
@@ -210,10 +210,10 @@
 			uni.setNavigationBarTitle({
 				title: option.name + '/USDT'
 			})
-			this.webTitle = option.name
-
+			this.activeId = Number(option.id)
 			this.tradeGoodsList = uni.getStorageSync('tradeGoodsList')
-			this.SetTradeGood()
+			this.setActiveClose()
+
 
 			for (let i = 0; i < 100; ++i) {
 				this.xAxisDatas.push('')
@@ -237,39 +237,17 @@
 					this.initEchartsData()
 				}, 3000)
 			},
-			randomNumberFun(max) {
-				return Number((Math.random() * max)) - (max / 2);
-			},
-			SetTradeGood() {
-				let updateValue1 = Math.floor(Math.random() * this.tradeGoodsList.length)
-				let formerAmount = Number(this.tradeGoodsList[updateValue1].close)
-				// 生成涨幅随机小数
-				let randomNumber = this.randomNumberFun(0.5)
-				//涨幅计算
-				switch (this.tradeGoodsList[updateValue1].direction) {
-					case 1:
-						// 涨
-						randomNumber = Math.abs(randomNumber)
-						break;
-					case 2:
-						// 跌
-						randomNumber = Math.abs(randomNumber) * -1
-						break;
-				}
-				formerAmount += formerAmount * randomNumber
-				this.tradeGoodsList[updateValue1].close = formerAmount.toFixed(6)
-				this.tradeGoodsList[updateValue1].change = randomNumber.toFixed(2)
-				uni.setStorageSync('tradeGoodsList', this.tradeGoodsList)
-
+			setActiveClose() {
+				this.tradeGoodsList = uni.getStorageSync('tradeGoodsList')
 				this.tradeGoodsList.map((item) => {
-					if (item.name == this.webTitle) {
+					if (item.id == this.activeId) {
 						this.activeClose = item.close;
 					}
 				})
-
 				setTimeout(() => {
-					this.SetTradeGood()
+					this.setActiveClose()
 				}, 3000)
+
 			},
 			onNavigationBarButtonTap(e) {
 				this.$refs.showRight.open();
