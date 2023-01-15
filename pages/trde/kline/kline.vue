@@ -3,7 +3,7 @@
 		<view class="kline-header">
 			<view class="kline-header-left">
 				<view class="header-left-price">
-					4.9112
+					{{randomNumber}}
 				</view>
 				<view class="header-left-black">
 					≈₹332.27
@@ -113,8 +113,9 @@
 			return {
 				activeNav: 0,
 				inputValue: 0,
-				xAxisDatas: ['', '', '', '', '', '', '', '', '', '', ''],
-				yAxisDatas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+				xAxisDatas: [],
+				yAxisDatas: [],
+				randomNumber: 0.00,
 				echartsOption: {
 					animation: false,
 					grid: {
@@ -127,7 +128,7 @@
 						type: 'category',
 						boundaryGap: false,
 						splitLine: {
-							show: true,
+							show: false,
 							lineStyle: {
 								type: 'dashed',
 								color: 'rgba(128, 128, 128, 0.3)'
@@ -187,21 +188,29 @@
 		onLoad(option) {
 			this.routeGuard()
 			uni.setNavigationBarTitle({
-				title: option.name + '/USTD'
+				title: option.name + '/USDT'
 			})
+			for (let i = 0; i < 100; ++i) {
+				this.xAxisDatas.push('')
+			}
+			this.echartsOption.xAxis.data = this.xAxisDatas
 			this.initEchartsData()
 		},
 		methods: {
 			initEchartsData() {
-				let NewXAxisDatas = this.yAxisDatas;
-				NewXAxisDatas.splice(0, 1)
-				NewXAxisDatas[9] = Math.floor(Math.random() * (100 - 0) + 0)
-				this.yAxisDatas = NewXAxisDatas;
-				this.echartsOption.series[0].data = NewXAxisDatas
+				if (this.yAxisDatas.length > 50) {
+					this.yAxisDatas.splice(0, 1)
+				}
+
+				let randomNumber = (Math.random() * (3.9 - 2) + 3).toFixed(4);
+
+				this.yAxisDatas.push(randomNumber)
+				this.randomNumber = randomNumber
+				this.echartsOption.series[0].data = this.yAxisDatas
 
 				setTimeout(() => {
 					this.initEchartsData()
-				}, 1000)
+				}, 3000)
 			}
 		}
 	}

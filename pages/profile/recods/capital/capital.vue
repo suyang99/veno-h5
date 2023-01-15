@@ -48,11 +48,10 @@
 		methods: {
 			getAccountList(value) {
 				let url = `user/account/record?type=${value}`
-				this.uniRequest(url, {}, 'GET')
-					.then((res) => {
-						res.data.list.map(item => item.updated_at = this.formatDateTime(item.updated_at))
-						this.dataList = res.data.list
-					})
+				this.uniRequest(url, {}, 'GET').then((res) => {
+					res.data.list.map(item => item.updated_at = this.formatDateTime(item.updated_at))
+					this.dataList = res.data.list
+				})
 			},
 		}
 	}

@@ -12,18 +12,19 @@
 			</view>
 		</view>
 		<view class="mraket-content">
-			<view class="mraket-list" v-for="item in 15" :key="item" @click="openKlinePage('XRP'+ item)">
+			<view class="mraket-list" v-for="(item,index) in tradeGoodsList" :key="index"
+				@click="openKlinePage(item.name)">
 				<view class="mraket-list-name">
-					<view class="list-name-1">XRP{{item}}</view>
-					<view class="list-name-2">24H ₹5.{{item}}1B</view>
+					<view class="list-name-1">{{item.name}}</view>
+					<view class="list-name-2">24H ₹{{item.vol.toFixed(2)}} B</view>
 				</view>
 				<view class="mraket-list-name">
-					<view class="list-name-1">0.{{item}}354{{item}}</view>
-					<view class="list-name-2">≈₹{{item}}2.70</view>
+					<view class="list-name-1">{{item.close}}</view>
+					<view class="list-name-2">≈₹{{(rate * item.close).toFixed(2)}}</view>
 				</view>
 				<view class="mraket-list-name" style="text-align: right;">
-					<view :class="item % 2 == 0 ? 'mraket-list-change red': 'mraket-list-change green'">
-						{{item % 2 == 0 ?'+2.85%' : '-1.46%'}}
+					<view :class="item.change >= 0 ? 'mraket-list-change red': 'mraket-list-change green'">
+						{{item.change >= 0 ? `+${Math.abs(item.change)}%` : `${item.change}%`}}
 					</view>
 				</view>
 			</view>
@@ -35,13 +36,67 @@
 	export default {
 		data() {
 			return {
-
+				tradeGoodsList: [],
+				rate: 0
 			}
 		},
 		onLoad() {
-			this.routeGuard()
+			if (this.routeGuard()) {
+				this.getTradeGoods()
+			}
 		},
 		methods: {
+			randomNumberFun(max) {
+				return Number((Math.random() * max)) - (max / 2);
+			},
+			SetTradeGood() {
+				let updateValue1 = Math.floor(Math.random() * this.tradeGoodsList.length)
+				let formerAmount = Number(this.tradeGoodsList[updateValue1].close)
+				// 生成涨幅随机小数
+				let randomNumber = this.randomNumberFun(0.5)
+				//涨幅计算
+				switch (this.tradeGoodsList[updateValue1].direction) {
+					case 1:
+						// 涨
+						randomNumber = Math.abs(randomNumber)
+						break;
+					case 2:
+						// 跌
+						randomNumber = Math.abs(randomNumber) * -1
+						break;
+				}
+				formerAmount += formerAmount * randomNumber
+				this.tradeGoodsList[updateValue1].close = formerAmount.toFixed(6)
+				this.tradeGoodsList[updateValue1].change = randomNumber.toFixed(2)
+				uni.setStorageSync('tradeGoodsList', this.tradeGoodsList)
+
+				setTimeout(() => {
+					this.SetTradeGood()
+				}, 3000)
+			},
+			getTradeGoods() {
+				this.uniRequest('trade/goods', {}, 'GET').then((res) => {
+					if (res.code === 0) {
+						let newData = []
+						res.data.list.map((item) => {
+							newData.push({
+								id: item.id,
+								name: item.name,
+								direction: item.direction,
+								close: Number(item.data.close.toFixed(4)),
+								vol: item.data.vol,
+								change: this.randomNumberFun(9.99).toFixed(2)
+							})
+
+						})
+						this.tradeGoodsList = newData;
+						this.rate = res.data.rate;
+						uni.setStorage('rate', res.data.rate)
+						this.SetTradeGood()
+
+					}
+				})
+			},
 			openKlinePage(value) {
 				uni.navigateTo({
 					url: '/pages/trde/kline/kline?name=' + value
@@ -53,6 +108,8 @@
 
 <style lang="scss">
 	.content {
+		padding-bottom: 80rpx;
+
 		.market-header {
 			padding: 20rpx;
 			background: #fff;
