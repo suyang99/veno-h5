@@ -39,7 +39,7 @@
 				Withdrawal charges {{withdrawCharge}}% Taxs, withdraw time Monday-Friday 7am-9am
 			</view>
 		</view>
-		<view class="content-pay" @click="goRecordsPage">
+		<view class="content-pay" @click="accountWithdraw">
 			Submit
 		</view>
 	</view>
@@ -52,6 +52,7 @@
 				amount: 0,
 				accountBalance: 0.00,
 				withdrawCharge: 0,
+				withdrawLimit: 0,
 				account: {
 					bank: []
 				}
@@ -59,9 +60,44 @@
 		},
 		onLoad(options) {
 			this.withdrawCharge = Number(options.withdrawCharge)
+			this.withdrawLimit = Number(options.withdrawLimit)
 			this.getAccount()
+			this.getAccountBalance()
 		},
 		methods: {
+			accountWithdraw() {
+				const _this = this
+				if (this.amount < this.withdrawLimit) {
+					this.uniRequest('user/account/withdraw', {
+						amount: this.amount
+					}).then((res) => {
+						this.getAccountBalance()
+						uni.showModal({
+							content: res.message,
+							showCancel: false,
+							confirmText: 'Enter',
+							success: function(_res) {
+								if (_res.confirm) {
+									_this.goRecordsPage()
+
+								}
+							}
+						});
+					})
+				} else {
+					uni.showModal({
+						content: "Maximum withdrawal：" + this.withdrawLimit,
+						showCancel: false,
+						confirmText: 'Enter',
+						success: function(res) {
+							if (res.confirm) {
+
+							}
+						}
+					});
+				}
+
+			},
 			getAccountBalance() {
 				this.uniRequest('user/account/balance', {}, 'GET').then((res) => {
 					this.accountBalance = res.data.balance
@@ -88,7 +124,7 @@
 			},
 			goRecordsPage() {
 				uni.navigateTo({
-					url: '/pages/index/payout/records/records'
+					url: '/pages/profile/recods/capital/capital?type=withdraw'
 				})
 			}
 		}

@@ -106,6 +106,7 @@
 					site_logo: "",
 					site_name: "",
 					withdraw_charge: '',
+					withdraw_limit: ''
 				},
 				noticeContent: ''
 			}
@@ -154,8 +155,10 @@
 				})
 			},
 			goPayoutPage() {
+				let url =
+					`/pages/index/payout/payout?withdrawCharge=${this.settings.withdraw_charge}&withdrawLimit=${this.settings.withdraw_limit}`
 				uni.navigateTo({
-					url: '/pages/index/payout/payout?withdrawCharge=' + this.settings.withdraw_charge
+					url: url
 				})
 			},
 			goDirectPage() {
@@ -281,12 +284,9 @@
 			.commonality-window-black {
 				width: 100%;
 				height: 100%;
-
 				display: flex;
 				justify-content: center;
 				align-items: center;
-
-
 
 				.commonality-window-card {
 					width: 85%;
