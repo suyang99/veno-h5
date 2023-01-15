@@ -54,7 +54,7 @@
 				Users Withdraw
 			</view>
 			<view class="content-widhraw-log">
-				<swiper circular="true" vertical="true" interval="1000" display-multiple-items="4" autoplay="true"
+				<swiper circular="true" vertical="true" interval="1500" display-multiple-items="4" autoplay="true"
 					class="mq">
 					<swiper-item class="item" v-for="item in 10" :key="item">
 						<view class="item-li">MS Yashaswini{{item}} </view>
@@ -179,6 +179,7 @@
 			padding: 0 20rpx;
 			height: 360rpx;
 			overflow: hidden;
+			margin-bottom: 10rpx;
 
 			.remake-swiper-item {
 				height: 440rpx;

@@ -49,7 +49,7 @@
 		}, {
 			"path": "pages/profile/recods/recods",
 			"style": {
-				"navigationBarTitleText": "Exchange Recods",
+				"navigationBarTitleText": "Recods",
 				"enablePullDownRefresh": false
 			}
 
