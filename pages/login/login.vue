@@ -80,7 +80,6 @@
 				this.requestLogin('user/login', this.login)
 			},
 			registerFn() {
-				console.log('hi')
 				this.requestLogin('user/register', this.register)
 			}
 		}

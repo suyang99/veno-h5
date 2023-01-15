@@ -3,7 +3,7 @@
 		<view class="kline-header">
 			<view class="kline-header-left">
 				<view class="header-left-price">
-					{{randomNumber}}
+					{{activeClose}}
 				</view>
 				<view class="header-left-black">
 					≈₹332.27
@@ -100,6 +100,23 @@
 				</view>
 			</view>
 		</view>
+		<uni-drawer ref="showRight" mode="left">
+			<scroll-view style="height: 100%;" scroll-y="true">
+				<view class="drawer-content">
+					<view class="drawer-content-header">
+						Exchange
+					</view>
+					<view class="drawer-content-item" v-for="(item,index) in tradeGoodsList" :key="index">
+						<view class="content-item-key">
+							{{item.name}}
+						</view>
+						<view :class="item.change >= 0?'content-item-value red':'content-item-value green'">
+							{{item.close}}
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+		</uni-drawer>
 	</view>
 </template>
 
@@ -111,8 +128,11 @@
 		},
 		data() {
 			return {
+				webTitle: '',
 				activeNav: 0,
 				inputValue: 0,
+				activeClose: '',
+				tradeGoodsList: [],
 				xAxisDatas: [],
 				yAxisDatas: [],
 				randomNumber: 0.00,
@@ -190,6 +210,11 @@
 			uni.setNavigationBarTitle({
 				title: option.name + '/USDT'
 			})
+			this.webTitle = option.name
+
+			this.tradeGoodsList = uni.getStorageSync('tradeGoodsList')
+			this.SetTradeGood()
+
 			for (let i = 0; i < 100; ++i) {
 				this.xAxisDatas.push('')
 			}
@@ -198,8 +223,8 @@
 		},
 		methods: {
 			initEchartsData() {
-				if (this.yAxisDatas.length > 50) {
-					this.yAxisDatas.splice(0, 1)
+				if (this.yAxisDatas.length > 76) {
+					this.yAxisDatas.splice(0, 40)
 				}
 
 				let randomNumber = (Math.random() * (3.9 - 2) + 3).toFixed(4);
@@ -211,6 +236,46 @@
 				setTimeout(() => {
 					this.initEchartsData()
 				}, 3000)
+			},
+			randomNumberFun(max) {
+				return Number((Math.random() * max)) - (max / 2);
+			},
+			SetTradeGood() {
+				let updateValue1 = Math.floor(Math.random() * this.tradeGoodsList.length)
+				let formerAmount = Number(this.tradeGoodsList[updateValue1].close)
+				// 生成涨幅随机小数
+				let randomNumber = this.randomNumberFun(0.5)
+				//涨幅计算
+				switch (this.tradeGoodsList[updateValue1].direction) {
+					case 1:
+						// 涨
+						randomNumber = Math.abs(randomNumber)
+						break;
+					case 2:
+						// 跌
+						randomNumber = Math.abs(randomNumber) * -1
+						break;
+				}
+				formerAmount += formerAmount * randomNumber
+				this.tradeGoodsList[updateValue1].close = formerAmount.toFixed(6)
+				this.tradeGoodsList[updateValue1].change = randomNumber.toFixed(2)
+				uni.setStorageSync('tradeGoodsList', this.tradeGoodsList)
+
+				this.tradeGoodsList.map((item) => {
+					if (item.name == this.webTitle) {
+						this.activeClose = item.close;
+					}
+				})
+
+				setTimeout(() => {
+					this.SetTradeGood()
+				}, 3000)
+			},
+			onNavigationBarButtonTap(e) {
+				this.$refs.showRight.open();
+			},
+			closeDrawer() {
+				this.$refs.showRight.close();
 			}
 		}
 	}
@@ -407,6 +472,51 @@
 			}
 
 
+		}
+
+		/deep/.uni-drawer__content {
+			width: 60%;
+
+			.drawer-content {
+				background-color: #151f31;
+				height: 100%;
+
+				.drawer-content-header {
+					color: #fcfffb;
+					font-size: 36rpx;
+					text-align: left;
+					font-weight: 700;
+					padding: 36rpx 0;
+					padding-left: 10rpx;
+					border-bottom: 2px solid #5ad2fe;
+				}
+
+				.drawer-content-item {
+					padding: 20rpx;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					font-size: 36rpx;
+
+
+					.content-item-key {
+						font-size: 36rpx;
+						color: #ffffff;
+					}
+
+					.content-item-value {
+						font-size: 28rpx;
+					}
+
+					.red {
+						color: #e34f68;
+					}
+
+					.green {
+						color: #28baa6;
+					}
+				}
+			}
 		}
 
 	}
