@@ -65,13 +65,15 @@
 			</view>
 		</view>
 		<view class="commonality-window" v-if="commonalityWindow">
-			<view class="commonality-window-card">
-				<view class="window-card-header">
-					Notice
-				</view>
-				<rich-text class="window-card-content" :nodes="noticeContent" />
-				<view class="window-card-btn" @click="switchCommonalityWindow">
-					Confirm
+			<view class="commonality-window-black">
+				<view class="commonality-window-card">
+					<view class="window-card-header">
+						Notice
+					</view>
+					<rich-text class="window-card-content" :nodes="noticeContent" />
+					<view class="window-card-btn" @click="switchCommonalityWindow">
+						Confirm
+					</view>
 				</view>
 			</view>
 		</view>
@@ -265,56 +267,67 @@
 		}
 
 		.commonality-window {
+			box-sizing: border-box;
 			position: fixed;
+			overflow: auto;
+			padding: 40rpx 0;
 			top: 0;
 			left: 0;
 			z-index: 2000;
 			width: 100%;
 			height: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
 			background-color: rgba(0, 0, 0, .7);
 
-			.commonality-window-card {
-				width: 85%;
-				height: 80%;
-				border-radius: 10rpx;
-				background-color: white;
+			.commonality-window-black {
+				width: 100%;
+				height: 100%;
 
-				.window-card-header {
-					text-align: center;
-					font-size: 36rpx;
-					color: #ed662c;
-					padding: 36rpx;
-					border-bottom: 1px solid #f2f2f2;
-					font-weight: 700;
-				}
+				display: flex;
+				justify-content: center;
+				align-items: center;
 
-				.window-card-content {
-					overflow: scroll;
-					height: 70%;
-					padding: 20rpx 30rpx;
 
-					h1,
-					h2,
-					p {
-						margin: 20rpx;
+
+				.commonality-window-card {
+					width: 85%;
+					border-radius: 10rpx;
+					background-color: white;
+
+					.window-card-header {
+						text-align: center;
+						font-size: 36rpx;
+						color: #ed662c;
+						padding: 36rpx;
+						border-bottom: 1px solid #f2f2f2;
+						font-weight: 700;
+					}
+
+					.window-card-content {
+						overflow: scroll;
+						height: 70%;
+						padding: 20rpx 30rpx;
+
+						h1,
+						h2,
+						p {
+							margin: 20rpx;
+						}
+					}
+
+					.window-card-btn {
+						background: #ed662c;
+						display: block;
+						padding: 20rpx;
+						text-align: center;
+						border-radius: 20rpx;
+						color: #fff;
+						font-size: 40rpx;
+						font-weight: 700;
+						margin: 40rpx;
 					}
 				}
-
-				.window-card-btn {
-					background: #ed662c;
-					display: block;
-					padding: 20rpx;
-					text-align: center;
-					border-radius: 20rpx;
-					color: #fff;
-					font-size: 40rpx;
-					font-weight: 700;
-					margin: 40rpx;
-				}
 			}
+
 		}
 	}
 </style>
