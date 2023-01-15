@@ -51,7 +51,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="content-pay" @click="openUrl(onlineService)">
+		<view class="content-pay" @click="recharge">
 			Sending screenshots
 		</view>
 		<view class="content-note">
@@ -85,6 +85,15 @@
 				this.uniRequest('common/settings', {}, 'GET').then((res) => {
 					this.dueBank = res.data.due_bank
 					this.onlineService = res.data.online_service
+				})
+			},
+			recharge() {
+				this.uniRequest('user/account/recharge', {
+					amount: this.money
+				}, ).then((res) => {
+					if (res.code === 0) {
+						this.openUrl(this.onlineService)
+					}
 				})
 			},
 			//复制链接
