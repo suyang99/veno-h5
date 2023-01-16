@@ -52,22 +52,27 @@
 				amount: 0,
 				accountBalance: 0.00,
 				withdrawCharge: 0,
-				withdrawLimit: 0,
+				withdrawLimit: {
+					max: 0,
+					min: 0
+				},
 				account: {
 					bank: []
 				}
 			}
 		},
 		onLoad(options) {
+			console.log(options.withdrawLimit.split(',')[0])
 			this.withdrawCharge = Number(options.withdrawCharge)
-			this.withdrawLimit = Number(options.withdrawLimit)
+			this.withdrawLimit.min = Number(options.withdrawLimit.split(',')[0])
+			this.withdrawLimit.max = Number(options.withdrawLimit.split(',')[1])
 			this.getAccount()
 			this.getAccountBalance()
 		},
 		methods: {
 			accountWithdraw() {
 				const _this = this
-				if (this.amount < this.withdrawLimit) {
+				if (this.amount < this.withdrawLimit.max && this.amount > this.withdrawLimit.min) {
 					this.uniRequest('user/account/withdraw', {
 						amount: this.amount
 					}).then((res) => {
@@ -85,8 +90,10 @@
 						});
 					})
 				} else {
+					let contentText = "Maximum withdrawal：" + this.withdrawLimit.max + ",Minimum withdrawal：" + this
+						.withdrawLimit.min;
 					uni.showModal({
-						content: "Maximum withdrawal：" + this.withdrawLimit,
+						content: contentText,
 						showCancel: false,
 						confirmText: 'Enter',
 						success: function(res) {
