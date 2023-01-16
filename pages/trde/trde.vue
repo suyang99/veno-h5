@@ -69,7 +69,6 @@
 				this.tradeGoodsList[updateValue1].close = formerAmount.toFixed(6)
 				this.tradeGoodsList[updateValue1].change = randomNumber.toFixed(2)
 				uni.setStorageSync('tradeGoodsList', this.tradeGoodsList)
-				console.log('🐞')
 				setTimeout(() => {
 					this.SetTradeGood()
 				}, 3000)

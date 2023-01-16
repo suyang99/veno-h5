@@ -8,7 +8,7 @@
 				<view class="header-left-black">
 					≈₹332.27
 					<view class="left-black-call">
-						1.06%
+						{{activeChange}}%
 					</view>
 				</view>
 			</view>
@@ -18,7 +18,7 @@
 						High
 					</view>
 					<view class="right-balck-value">
-						4.97
+						{{actualData.high}}
 					</view>
 				</view>
 				<view class="header-right-balck">
@@ -26,7 +26,7 @@
 						Low
 					</view>
 					<view class="right-balck-value">
-						4.822
+						{{actualData.low}}
 					</view>
 				</view>
 				<view class="header-right-balck">
@@ -34,7 +34,7 @@
 						24H
 					</view>
 					<view class="right-balck-value">
-						$0.02B
+						$ {{actualData.high}}
 					</view>
 				</view>
 			</view>
@@ -131,11 +131,22 @@
 				activeId: '',
 				activeNav: 0,
 				inputValue: 0,
-				activeClose: '',
+				activeClose: '0.00',
+				activeChange: '0.00',
+				cycleTime: 0,
+				actualData: {
+					high: 0.00,
+					low: 0.00,
+					high: 0.00
+				},
 				tradeGoodsList: [],
+				goodsDetailList: [],
 				xAxisDatas: [],
-				yAxisDatas: [],
+				yAxisDatas: [4.55, 6.77, 3.22, 3.99, 4.66],
 				randomNumber: 0.00,
+				settings: {
+					trade_limit: 0
+				},
 				echartsOption: {
 					animation: false,
 					grid: {
@@ -202,7 +213,8 @@
 							type: 'cross'
 						},
 					}
-				}
+				},
+				setTimeoutFun: null
 			}
 		},
 		onLoad(option) {
@@ -218,21 +230,51 @@
 				this.xAxisDatas.push('')
 			}
 			this.echartsOption.xAxis.data = this.xAxisDatas
-			this.initEchartsData()
+
+			this.getSettings()
+			this.getGoodsDetail()
 		},
 		methods: {
+			getSettings() {
+				this.uniRequest('common/settings', {}, 'GET').then((res) => {
+					if (res.code === 0) {
+						this.settings = res.data
+					}
+				})
+			},
+			getGoodsDetail() {
+				this.uniRequest('trade/goods/detail?id=' + this.activeId, {}, 'GET').then((res) => {
+					if (res.code === 0) {
+						this.goodsDetailList = res.data
+						clearTimeout(this.setTimeoutFun)
+						this.initEchartsData()
+					}
+				})
+			},
 			initEchartsData() {
-				if (this.yAxisDatas.length > 76) {
-					this.yAxisDatas.splice(0, 40)
+				if (this.cycleTime < 200) {
+
+					let item = this.goodsDetailList[this.cycleTime]
+					if (this.yAxisDatas.length > 76) {
+						this.yAxisDatas.splice(0, 40)
+					}
+					let randomNumber = Number(item.close)
+					this.yAxisDatas.push(randomNumber)
+					this.randomNumber = randomNumber
+					this.echartsOption.series[0].data = this.yAxisDatas
+
+					this.cycleTime = this.cycleTime + 1
+
+					this.actualData = {
+						high: item.high,
+						low: item.low,
+						high: item.high
+					}
+				} else {
+					this.getGoodsDetail()
+					this.cycleTime = 0
 				}
-
-				let randomNumber = (Math.random() * (3.9 - 2) + 3).toFixed(4);
-
-				this.yAxisDatas.push(randomNumber)
-				this.randomNumber = randomNumber
-				this.echartsOption.series[0].data = this.yAxisDatas
-
-				setTimeout(() => {
+				this.setTimeoutFun = setTimeout(() => {
 					this.initEchartsData()
 				}, 3000)
 			},
@@ -241,6 +283,7 @@
 				this.tradeGoodsList.map((item) => {
 					if (item.id == this.activeId) {
 						this.activeClose = item.close;
+						this.activeChange = item.change
 					}
 				})
 				setTimeout(() => {
@@ -254,6 +297,9 @@
 			closeDrawer() {
 				this.$refs.showRight.close();
 			}
+		},
+		onBackPress() {
+			clearTimeout(this.setTimeoutFun)
 		}
 	}
 </script>
