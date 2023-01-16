@@ -2,22 +2,22 @@
 	<view class="content">
 		<view class="content-header">
 			<view :class="navigator == 0 ? 'content-header-item header-item-active' : 'content-header-item'"
-				@click="navigator = 0">
+				@click="getRecordList">
 				Trading Pairs
 			</view>
 			<view :class="navigator == 1 ? 'content-header-item header-item-active' : 'content-header-item'"
-				@click="navigator = 1">
+				@click="getRecordList">
 				History
 			</view>
 		</view>
-		<view class="mraket-list" v-show="navigator == 0">
-			<view class="mraket-list-item">
+		<view class="mraket-list" v-if="recordList.length > 0">
+			<view class="mraket-list-item" v-for="(item,index) in recordList" :key="index">
 				<view class="list-item-header">
-					<view class="item-header-text1 red">
-						PUT
+					<view :class="item.direction == 1? 'item-header-text1 red' : 'item-header-text1 green'">
+						{{item.direction == 1? "PUT" : "CALL"}}
 					</view>
 					<view class="item-header-text2">
-						FIL/USDT
+						{{item.goods_name}}/USDT
 					</view>
 					<view class="item-header-text3">
 						1M
@@ -29,7 +29,7 @@
 							Time
 						</view>
 						<view class="black-child-value">
-							13:13:31
+							{{item.created_at}}
 						</view>
 					</view>
 					<view class="item-black-child">
@@ -37,7 +37,7 @@
 							Openning Price
 						</view>
 						<view class="black-child-value">
-							2.98
+							{{item.opening}}
 						</view>
 					</view>
 					<view class="item-black-child" style="text-align: right;">
@@ -45,7 +45,7 @@
 							Closing Price
 						</view>
 						<view class="black-child-value">
-							2.98
+							{{item.closing}}
 						</view>
 					</view>
 				</view>
@@ -55,15 +55,15 @@
 							Total
 						</view>
 						<view class="black-child-value">
-							₹20
+							₹{{item.amount}}
 						</view>
 					</view>
 					<view class="item-black-child">
 						<view class="black-child-key">
 							Status
 						</view>
-						<view class="black-child-value red">
-							Loss
+						<view :class="item.result === 1 ? 'black-child-value green':'black-child-value red'">
+							{{item.result === 1 ? 'Profit' : 'Loss'}}
 						</view>
 					</view>
 					<view class="item-black-child" style="text-align: right;">
@@ -71,209 +71,18 @@
 							Settlement
 						</view>
 						<view class="black-child-value">
-							₹0
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="mraket-list-item">
-				<view class="list-item-header">
-					<view class="item-header-text1 green">
-						CALL
-					</view>
-					<view class="item-header-text2">
-						FIL/USDT
-					</view>
-					<view class="item-header-text3">
-						1M
-					</view>
-				</view>
-				<view class="list-item-black">
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Time
-						</view>
-						<view class="black-child-value">
-							13:13:31
-						</view>
-					</view>
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Openning Price
-						</view>
-						<view class="black-child-value">
-							2.98
-						</view>
-					</view>
-					<view class="item-black-child" style="text-align: right;">
-						<view class="black-child-key">
-							Closing Price
-						</view>
-						<view class="black-child-value">
-							2.98
-						</view>
-					</view>
-				</view>
-				<view class="list-item-black">
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Total
-						</view>
-						<view class="black-child-value">
-							₹20
-						</view>
-					</view>
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Status
-						</view>
-						<view class="black-child-value green">
-							Loss
-						</view>
-					</view>
-					<view class="item-black-child" style="text-align: right;">
-						<view class="black-child-key">
-							Settlement
-						</view>
-						<view class="black-child-value">
-							₹0
+							₹{{item.gain}}
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="mraket-list" v-show="navigator == 1">
-			<view class="mraket-list-item">
-				<view class="list-item-header">
-					<view class="item-header-text1 green">
-						CALL
-					</view>
-					<view class="item-header-text2">
-						FIL/USDT
-					</view>
-					<view class="item-header-text3">
-						1M
-					</view>
-				</view>
-				<view class="list-item-black">
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Time
-						</view>
-						<view class="black-child-value">
-							13:13:31
-						</view>
-					</view>
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Openning Price
-						</view>
-						<view class="black-child-value">
-							2.98
-						</view>
-					</view>
-					<view class="item-black-child" style="text-align: right;">
-						<view class="black-child-key">
-							Closing Price
-						</view>
-						<view class="black-child-value">
-							2.98
-						</view>
-					</view>
-				</view>
-				<view class="list-item-black">
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Total
-						</view>
-						<view class="black-child-value">
-							₹20
-						</view>
-					</view>
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Status
-						</view>
-						<view class="black-child-value green">
-							Loss
-						</view>
-					</view>
-					<view class="item-black-child" style="text-align: right;">
-						<view class="black-child-key">
-							Settlement
-						</view>
-						<view class="black-child-value">
-							₹0
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="mraket-list-item">
-				<view class="list-item-header">
-					<view class="item-header-text1 red">
-						PUT
-					</view>
-					<view class="item-header-text2">
-						FIL/USDT
-					</view>
-					<view class="item-header-text3">
-						1M
-					</view>
-				</view>
-				<view class="list-item-black">
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Time
-						</view>
-						<view class="black-child-value">
-							13:13:31
-						</view>
-					</view>
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Openning Price
-						</view>
-						<view class="black-child-value">
-							2.98
-						</view>
-					</view>
-					<view class="item-black-child" style="text-align: right;">
-						<view class="black-child-key">
-							Closing Price
-						</view>
-						<view class="black-child-value">
-							2.98
-						</view>
-					</view>
-				</view>
-				<view class="list-item-black">
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Total
-						</view>
-						<view class="black-child-value">
-							₹20
-						</view>
-					</view>
-					<view class="item-black-child">
-						<view class="black-child-key">
-							Status
-						</view>
-						<view class="black-child-value red">
-							Loss
-						</view>
-					</view>
-					<view class="item-black-child" style="text-align: right;">
-						<view class="black-child-key">
-							Settlement
-						</view>
-						<view class="black-child-value">
-							₹0
-						</view>
-					</view>
-				</view>
+		<view v-else class="mraket-list">
+			<view style="text-align: center;">
+				- No more -
 			</view>
 		</view>
+
 	</view>
 </template>
 
@@ -281,14 +90,25 @@
 	export default {
 		data() {
 			return {
-				navigator: 0
+				navigator: 1,
+				recordList: []
 			}
 		},
 		onLoad() {
 			this.routeGuard()
+			this.getRecordList()
 		},
 		methods: {
-
+			getRecordList() {
+				this.navigator = this.navigator === 0 ? 1 : 0
+				let url = `trade/record?type=${this.navigator === 0 ? 'pairs' : 'history'}`
+				this.uniRequest(url, {}, "GET").then((res) => {
+					res.data.data.list.map((item) => {
+						item.created_at = this.formatDateTime(item.created_at).split(' ')[1]
+					});
+					this.recordList = res.data.data.list
+				})
+			}
 		}
 	}
 </script>
