@@ -9,7 +9,7 @@
 					Registed:
 				</view>
 				<view class="card-back-value">
-					0
+					{{total.children}}
 				</view>
 			</view>
 			<view class="content-card-back">
@@ -17,7 +17,7 @@
 					Recharged peoples:
 				</view>
 				<view class="card-back-value">
-					0
+					{{total.recharged}}
 				</view>
 			</view>
 			<view class="content-card-back">
@@ -25,7 +25,7 @@
 					Cashed Amount:
 				</view>
 				<view class="card-back-value">
-					₹0.00
+					₹{{total.consume}}
 				</view>
 			</view>
 		</view>
@@ -46,11 +46,11 @@
 		<view v-show="navigator == 0" class="content-direcct">
 			<view class="direcct-in_come">
 				Total commissio：
-				<view class="direcct-in_come-text">₹0.00</view>
+				<view class="direcct-in_come-text">₹{{level.level1.commissio}}</view>
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					0
+					{{level.level1.members}}
 				</view>
 				<view class="direcct-black-value">
 					Number of people
@@ -58,7 +58,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					0
+					{{level.level1.orders}}
 				</view>
 				<view class="direcct-black-value">
 					Number of deposits
@@ -66,7 +66,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					₹0.00
+					₹{{level.level1.commissio}}
 				</view>
 				<view class="direcct-black-value">
 					Deposit amount
@@ -74,7 +74,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					₹0.00
+					₹{{level.level1.withdraw}}
 				</view>
 				<view class="direcct-black-value">
 					Withdrawal Amount
@@ -85,11 +85,11 @@
 		<view v-show="navigator == 1" class="content-direcct">
 			<view class="direcct-in_come">
 				Total commissio：
-				<view class="direcct-in_come-text">₹0.00</view>
+				<view class="direcct-in_come-text">₹{{level.level2.commissio}}</view>
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					1
+					{{level.level2.members}}
 				</view>
 				<view class="direcct-black-value">
 					Number of people
@@ -97,7 +97,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					1
+					{{level.level2.orders}}
 				</view>
 				<view class="direcct-black-value">
 					Number of deposits
@@ -105,7 +105,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					₹1.00
+					₹{{level.level2.commissio}}
 				</view>
 				<view class="direcct-black-value">
 					Deposit amount
@@ -113,7 +113,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					₹1.00
+					₹{{level.level2.withdraw}}
 				</view>
 				<view class="direcct-black-value">
 					Withdrawal Amount
@@ -124,11 +124,11 @@
 		<view v-show="navigator == 2" class="content-direcct">
 			<view class="direcct-in_come">
 				Total commissio：
-				<view class="direcct-in_come-text">₹0.00</view>
+				<view class="direcct-in_come-text">₹{{level.level3.commissio}}</view>
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					2
+					{{level.level3.members}}
 				</view>
 				<view class="direcct-black-value">
 					Number of people
@@ -136,7 +136,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					2
+					{{level.level3.orders}}
 				</view>
 				<view class="direcct-black-value">
 					Number of deposits
@@ -144,7 +144,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					₹2.00
+					₹{{level.level3.commissio}}
 				</view>
 				<view class="direcct-black-value">
 					Deposit amount
@@ -152,7 +152,7 @@
 			</view>
 			<view class="direcct-black">
 				<view class="direcct-black-key">
-					₹2.00
+					₹{{level.level3.withdraw}}
 				</view>
 				<view class="direcct-black-value">
 					Withdrawal Amount
@@ -167,14 +167,50 @@
 	export default {
 		data() {
 			return {
-				navigator: 0
+				navigator: 0,
+				total: {
+					children: 0,
+					recharged: "0.00",
+					consume: "0.00"
+				},
+				level: {
+					level1: {
+						commissio: "0.00",
+						members: 1,
+						orders: 0,
+						deposit: "0.00",
+						withdraw: "0.00"
+					},
+					level2: {
+						commissio: "0.00",
+						members: 1,
+						orders: 0,
+						deposit: "0.00",
+						withdraw: "0.00"
+					},
+					level3: {
+						commissio: "0.00",
+						members: 1,
+						orders: 0,
+						deposit: "0.00",
+						withdraw: "0.00"
+					},
+				}
 			}
 		},
 		onLoad() {
 			this.routeGuard()
+			this.getUserTeam()
 		},
 		methods: {
-
+			getUserTeam() {
+				this.uniRequest('user/team', {}, 'GET').then((res) => {
+					if (res.code === 0) {
+						this.total = res.data.total
+						this.level = res.data.level
+					}
+				})
+			}
 		}
 	}
 </script>
