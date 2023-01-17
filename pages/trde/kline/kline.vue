@@ -232,6 +232,7 @@
 			this.echartsOption.xAxis.data = this.xAxisDatas
 			this.getSettings()
 			this.getGoodsDetail()
+
 		},
 		methods: {
 			getSettings() {
@@ -264,11 +265,6 @@
 
 					this.cycleTime = this.cycleTime + 1
 
-					this.actualData = {
-						high: item.high,
-						low: item.low,
-						high: item.high
-					}
 				} else {
 					this.getGoodsDetail()
 					this.cycleTime = 0
@@ -282,7 +278,12 @@
 				this.tradeGoodsList.map((item) => {
 					if (item.id == this.activeId) {
 						this.activeClose = item.close;
-						this.activeChange = item.change
+						this.activeChange = item.change;
+						this.actualData = {
+							high: item.high,
+							low: item.low,
+							high: item.high
+						}
 					}
 				})
 				setTimeout(() => {
