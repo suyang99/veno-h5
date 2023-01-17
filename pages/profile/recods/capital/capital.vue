@@ -47,9 +47,9 @@
 			this.pageType = op.type
 			this.getAccountList(op.type)
 			uni.setNavigationBarTitle({
-				title: op.type + ' recods'
+				title: (op.type == 'recharge' ? 'Recharge' : op.type == 'withdraw' ? "Withdraw" : "Award") +
+					' Record'
 			})
-
 		},
 		methods: {
 			getAccountList(value) {

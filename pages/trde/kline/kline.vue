@@ -172,6 +172,7 @@
 					},
 					yAxis: {
 						axisLabel: {
+							show: false, // 不显示坐标轴上的文字
 							inside: true,
 							textStyle: {
 								color: '#639cab'
@@ -180,7 +181,7 @@
 						type: 'value',
 						position: 'right',
 						splitLine: {
-							show: true,
+							show: false,
 							lineStyle: {
 								type: 'dashed',
 								color: 'rgba(128, 128, 128, 0.3)'
