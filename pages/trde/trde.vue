@@ -84,7 +84,10 @@
 								direction: item.direction,
 								close: Number(item.data.close.toFixed(4)),
 								vol: item.data.vol,
-								change: this.randomNumberFun(9.99).toFixed(2)
+								change: this.randomNumberFun(9.99).toFixed(2),
+								high: item.data.high,
+								low: item.data.low,
+								high: item.data.high
 							})
 
 						})

@@ -4,7 +4,7 @@
 			<view class="list-item" v-for="(item,index) in dataList" :key="index">
 				<view class="list-item-black">
 					<view class="item-black-key">
-						Amount
+						{{pageType}}
 					</view>
 					<view class="item-black-value">
 						₹{{item.amount}}
@@ -12,7 +12,7 @@
 				</view>
 				<view class="list-item-black">
 					<view class="item-black-key">
-						Status
+						status
 					</view>
 					<view class="item-black-value2">
 						{{item.status === 1 ?"Unpaid" : item.status === 2 ? "Finish" : "Reject"}}
@@ -20,7 +20,7 @@
 				</view>
 				<view class="list-item-black" style="text-align: right;">
 					<view class="item-black-key">
-						Time
+						time
 					</view>
 					<view class="item-black-value3">
 						{{item.updated_at}}
@@ -38,12 +38,18 @@
 	export default {
 		data() {
 			return {
-				dataList: []
+				dataList: [],
+				pageType: ''
 			}
 		},
 		onLoad(op) {
 			this.routeGuard()
+			this.pageType = op.type
 			this.getAccountList(op.type)
+			uni.setNavigationBarTitle({
+				title: op.type + ' recods'
+			})
+
 		},
 		methods: {
 			getAccountList(value) {
