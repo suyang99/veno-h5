@@ -77,7 +77,7 @@
 				this.uniRequest('trade/goods', {}, 'GET').then((res) => {
 					if (res.code === 0) {
 						let newData = []
-						res.data.list.map((item) => {
+						res.data.map((item) => {
 							newData.push({
 								id: item.id,
 								name: item.name,

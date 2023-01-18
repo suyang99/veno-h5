@@ -113,7 +113,7 @@
 		}, {
 			"path": "pages/profile/recods/exchange/exchange",
 			"style": {
-				"navigationBarTitleText": "Records",
+				"navigationBarTitleText": "Record",
 				"enablePullDownRefresh": false
 			}
 

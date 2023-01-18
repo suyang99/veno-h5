@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="kline-header">
+		<view id="kline-header" class="kline-header">
 			<view class="kline-header-left">
 				<view class="header-left-price">
 					{{activeClose}}
@@ -40,7 +40,7 @@
 			</view>
 
 		</view>
-		<view class="kline-time">
+		<view id="kline-time" class="kline-time">
 			<view :class="activeNav == 0 ?'kline-time-item time-item-aktive' : 'kline-time-item'"
 				@click="activeNav = 0">
 				1M
@@ -59,9 +59,10 @@
 			</view>
 		</view>
 		<view class="kline-chart">
-			<echarts :option="echartsOption" style="height: 45vh;" />
+			<echarts v-if="clientHeight !== 0" :style="`height:${clientHeight}px;transition: all .2s ease-in-out;
+			-webkit-transition: all .2s ease-in-out;`" :option="echartsOption" />
 		</view>
-		<view class="kline-btns">
+		<view id="kline-btns" class="kline-btns">
 			<view class="kline-balance">
 				<view class="kline-balance-key">
 					₹95.00
@@ -128,12 +129,14 @@
 		},
 		data() {
 			return {
+				clientHeight: 0,
 				activeId: '',
 				activeNav: 0,
 				inputValue: 0,
 				activeClose: '0.00',
 				activeChange: '0.00',
-				cycleTime: 0,
+				cycleTime: 20,
+				ifCirculation: false,
 				actualData: {
 					high: 0.00,
 					low: 0.00,
@@ -218,6 +221,9 @@
 				setTimeoutFun: null
 			}
 		},
+		created() {
+
+		},
 		onLoad(option) {
 			this.routeGuard()
 			uni.setNavigationBarTitle({
@@ -225,14 +231,27 @@
 			})
 			this.activeId = Number(option.id)
 			this.tradeGoodsList = uni.getStorageSync('tradeGoodsList')
-			this.setActiveClose()
+			uni.getSystemInfo({
+				success: (res) => {
+					setTimeout(() => {
+						this.clientHeight = res.windowHeight - document.getElementById("kline-header")
+							.clientHeight - document.getElementById("kline-time").clientHeight -
+							document
+							.getElementById("kline-btns").clientHeight
+					}, 200)
+				}
+			});
 
-			for (let i = 0; i < 100; ++i) {
+			this.setActiveClose()
+			for (let i = 0; i < 50; ++i) {
 				this.xAxisDatas.push('')
 			}
 			this.echartsOption.xAxis.data = this.xAxisDatas
 			this.getSettings()
 			this.getGoodsDetail()
+
+		},
+		mounted() {
 
 		},
 		methods: {
@@ -247,7 +266,20 @@
 				this.uniRequest('trade/goods/detail?id=' + this.activeId, {}, 'GET').then((res) => {
 					if (res.code === 0) {
 						this.goodsDetailList = res.data
-						clearTimeout(this.setTimeoutFun)
+
+						if (!this.ifCirculation) {
+							let initDetailList = []
+							this.goodsDetailList.map((item, index) => {
+								if (index < 20) {
+									initDetailList.push(Number(item.close))
+								}
+
+							})
+							this.yAxisDatas = initDetailList
+							this.echartsOption.series[0].data = this.yAxisDatas
+							clearTimeout(this.setTimeoutFun)
+						}
+
 						this.initEchartsData()
 					}
 				})
@@ -256,8 +288,8 @@
 				if (this.cycleTime < 200) {
 
 					let item = this.goodsDetailList[this.cycleTime]
-					if (this.yAxisDatas.length > 76) {
-						this.yAxisDatas.splice(0, 40)
+					if (this.yAxisDatas.length > 40) {
+						this.yAxisDatas.splice(0, 10)
 					}
 					let randomNumber = Number(item.close)
 					this.yAxisDatas.push(randomNumber)
@@ -267,12 +299,13 @@
 					this.cycleTime = this.cycleTime + 1
 
 				} else {
+					this.ifCirculation = true
 					this.getGoodsDetail()
 					this.cycleTime = 0
 				}
 				this.setTimeoutFun = setTimeout(() => {
 					this.initEchartsData()
-				}, 3000)
+				}, 1000)
 			},
 			setActiveClose() {
 				this.tradeGoodsList = uni.getStorageSync('tradeGoodsList')
@@ -329,7 +362,9 @@
 
 <style lang="scss">
 	.content {
-		min-height: 94vh;
+		position: absolute;
+		width: 100%;
+		height: 100%;
 		background: #161e31;
 
 		.kline-header {
@@ -398,8 +433,8 @@
 		}
 
 		.kline-chart {
+			min-height: 45vh;
 			color: white;
-			// border: 1px solid red;
 		}
 
 		.kline-btns {
