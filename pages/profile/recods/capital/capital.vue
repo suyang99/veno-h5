@@ -1,6 +1,45 @@
 <template>
 	<view class="content">
-		<view class="content-list">
+		<view v-if="pageType=='award'" class="content-list">
+			<view class="list-item" v-for="(item,index) in dataList" :key="index" style="display: flex;">
+				<view class="list-item-black">
+					<view class="item-black-key">
+						{{pageType}}
+					</view>
+					<view class="item-black-value">
+						₹{{item.amount}}
+					</view>
+				</view>
+				<view class="list-item-black" style="text-align: center;">
+					<view class="item-black-key">
+						fullName
+					</view>
+					<view class="item-black-value2">
+						{{item.full_name}}
+					</view>
+				</view>
+				<view class="list-item-black" style="text-align: center;">
+					<view class="item-black-key">
+						remark
+					</view>
+					<view class="item-black-value2">
+						{{item.remark}}
+					</view>
+				</view>
+				<view class="list-item-black" style="text-align: right;">
+					<view class="item-black-key">
+						time
+					</view>
+					<view class="item-black-value3">
+						{{item.updated_at}}
+					</view>
+				</view>
+			</view>
+			<view class="content-list-nomare">
+				- No more -
+			</view>
+		</view>
+		<view v-else class="content-list">
 			<view class="list-item" v-for="(item,index) in dataList" :key="index">
 				<view class="list-item-black">
 					<view class="item-black-key">
