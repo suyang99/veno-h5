@@ -31,7 +31,7 @@
 			</view>
 		</view>
 		<view class="content-bankitem">
-			SELECT BANK
+			<uni-data-checkbox v-model="value" :localdata="range" mode="list"></uni-data-checkbox>
 		</view>
 		<view class="content-note">
 			<image class="content-note-icon" src="../../../static/index/note-icon.png" mode="aspectFit" />
@@ -49,9 +49,11 @@
 	export default {
 		data() {
 			return {
+				value: 0,
 				amount: 0,
 				accountBalance: 0.00,
 				withdrawCharge: 0,
+				range: [],
 				withdrawLimit: {
 					max: 0,
 					min: 0
@@ -62,7 +64,6 @@
 			}
 		},
 		onLoad(options) {
-			console.log(options.withdrawLimit.split(',')[0])
 			this.withdrawCharge = Number(options.withdrawCharge)
 			this.withdrawLimit.min = Number(options.withdrawLimit.split(',')[0])
 			this.withdrawLimit.max = Number(options.withdrawLimit.split(',')[1])
@@ -90,8 +91,7 @@
 						});
 					})
 				} else {
-					let contentText = "Maximum withdrawal：" + this.withdrawLimit.max + ",Minimum withdrawal：" + this
-						.withdrawLimit.min;
+					let contentText = "Minimum：" + this.withdrawLimit.min + "，Maximum：" + this.withdrawLimit.max;
 					uni.showModal({
 						content: contentText,
 						showCancel: false,
@@ -113,6 +113,10 @@
 			getAccount() {
 				this.uniRequest('user/account/info', {}, 'GET').then((res) => {
 					this.account = res.data
+					this.range = [{
+						value: 0,
+						text: res.data.bank.bank_name
+					}]
 					if (this.account.bank.length === 0) {
 						uni.showModal({
 							content: "Please bind the withdrawal bank card first",

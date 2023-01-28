@@ -109,8 +109,9 @@
 				})
 			},
 			goPayoutPage() {
+				let withdrawLimit = `${this.settings.withdraw_limit.min},${this.settings.withdraw_limit.max}`
 				uni.navigateTo({
-					url: `/pages/index/payout/payout?withdrawCharge=${this.settings.withdraw_charge}&withdrawLimit=${this.settings.withdraw_limit}`
+					url: `/pages/index/payout/payout?withdrawCharge=${this.settings.withdraw_charge}&withdrawLimit=${withdrawLimit}`
 				})
 			},
 			goRechargePage() {
