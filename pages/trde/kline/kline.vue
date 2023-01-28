@@ -65,7 +65,7 @@
 		<view id="kline-btns" class="kline-btns">
 			<view class="kline-balance">
 				<view class="kline-balance-key">
-					₹95.00
+					₹{{accountBalance}}
 				</view>
 				<view class="kline-balance-value">
 					Balance
@@ -129,6 +129,7 @@
 		},
 		data() {
 			return {
+				accountBalance: 0.00,
 				clientHeight: 0,
 				activeId: '',
 				activeNav: 0,
@@ -174,6 +175,9 @@
 						data: []
 					},
 					yAxis: {
+						min: function(value) {
+							return value.min;
+						},
 						axisLabel: {
 							show: false, // 不显示坐标轴上的文字
 							inside: true,
@@ -226,6 +230,7 @@
 		},
 		onLoad(option) {
 			this.routeGuard()
+			this.getAccountBalance()
 			uni.setNavigationBarTitle({
 				title: option.name + '/USDT'
 			})
@@ -262,18 +267,21 @@
 					}
 				})
 			},
+			getAccountBalance() {
+				this.uniRequest('user/account/balance', {}, 'GET').then((res) => {
+					this.accountBalance = res.data.balance
+				})
+			},
 			getGoodsDetail() {
 				this.uniRequest('trade/goods/detail?id=' + this.activeId, {}, 'GET').then((res) => {
 					if (res.code === 0) {
 						this.goodsDetailList = res.data
-
 						if (!this.ifCirculation) {
 							let initDetailList = []
 							this.goodsDetailList.map((item, index) => {
 								if (index < 20) {
 									initDetailList.push(Number(item.close))
 								}
-
 							})
 							this.yAxisDatas = initDetailList
 							this.echartsOption.series[0].data = this.yAxisDatas
@@ -305,7 +313,7 @@
 				}
 				this.setTimeoutFun = setTimeout(() => {
 					this.initEchartsData()
-				}, 1000)
+				}, 3000)
 			},
 			setActiveClose() {
 				this.tradeGoodsList = uni.getStorageSync('tradeGoodsList')

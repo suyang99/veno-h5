@@ -80,7 +80,7 @@
 						uni.showModal({
 							content: res.message,
 							showCancel: false,
-							confirmText: 'Enter',
+							confirmText: 'Confirm',
 							success: function(_res) {
 								if (_res.confirm) {
 									_this.goRecordsPage()
@@ -95,7 +95,7 @@
 					uni.showModal({
 						content: contentText,
 						showCancel: false,
-						confirmText: 'Enter',
+						confirmText: 'Confirm',
 						success: function(res) {
 							if (res.confirm) {
 
@@ -117,7 +117,7 @@
 						uni.showModal({
 							content: "Please bind the withdrawal bank card first",
 							showCancel: false,
-							confirmText: 'Enter',
+							confirmText: 'Confirm',
 							success: function(res) {
 								if (res.confirm) {
 									uni.navigateTo({

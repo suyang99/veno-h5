@@ -35,10 +35,10 @@
 		data() {
 			return {
 				inputValue: {
-					bank_name: 'RenLishisan',
-					account_holder: '888888888818',
-					account_num: '188888',
-					ifsc: 'CDCC',
+					bank_name: '',
+					account_holder: '',
+					account_num: '',
+					ifsc: '',
 				}
 			}
 		},

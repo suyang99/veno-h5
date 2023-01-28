@@ -95,7 +95,7 @@
 				if (this.recharge < this.limit.min || this.recharge > this.limit.max) {
 					uni.showModal({
 						title: 'Hint',
-						content: `Maximum limit：${this.limit.max},Maximum limit：${this.limit.min}.`,
+						content: `Maximum：${this.limit.max},Minimum：${this.limit.min}.`,
 						showCancel: false,
 						confirmText: 'Enter',
 						success: function(res) {

@@ -4,7 +4,7 @@
 			<view class="list-item" v-for="(item,index) in dataList" :key="index" style="display: flex;">
 				<view class="list-item-black">
 					<view class="item-black-key">
-						{{pageType}}
+						amount
 					</view>
 					<view class="item-black-value">
 						₹{{item.amount}}
@@ -12,7 +12,7 @@
 				</view>
 				<view class="list-item-black" style="text-align: center;">
 					<view class="item-black-key">
-						fullName
+						people
 					</view>
 					<view class="item-black-value2">
 						{{item.full_name}}

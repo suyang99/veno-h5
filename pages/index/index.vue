@@ -140,7 +140,6 @@
 			},
 			getSettingsFn() {
 				this.uniRequest('common/settings', {}, 'GET').then((res) => {
-					console.log(res)
 					if (res.code === 0) {
 						this.settings = res.data
 						if (res.data.notice) {

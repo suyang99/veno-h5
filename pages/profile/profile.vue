@@ -84,12 +84,15 @@
 					created_at: "",
 					updated_at: ""
 				},
-				accountBalance: 0.00
+				accountBalance: 0.00,
+				settings: {},
+				onlineService: ''
 			}
 		},
 		onLoad() {
 			this.routeGuard()
 			this.getUserInfo()
+			this.getSettingsFn()
 		},
 		onShow() {
 			this.getAccountBalance()
@@ -107,12 +110,12 @@
 			},
 			goPayoutPage() {
 				uni.navigateTo({
-					url: '/pages/index/payout/payout'
+					url: `/pages/index/payout/payout?withdrawCharge=${this.settings.withdraw_charge}&withdrawLimit=${this.settings.withdraw_limit}`
 				})
 			},
 			goRechargePage() {
 				uni.navigateTo({
-					url: '/pages/index/recharge/recharge'
+					url: `/pages/index/recharge/recharge`
 				})
 			},
 			// goSafePage() {
@@ -131,7 +134,15 @@
 				})
 			},
 			openUrl() {
-				window.open("https://t.me/graahaj001", "_blank");
+				window.open(this.onlineService, "_blank");
+			},
+			getSettingsFn() {
+				this.uniRequest('common/settings', {}, 'GET').then((res) => {
+					if (res.code === 0) {
+						this.settings = res.data
+						this.onlineService = res.data.online_service
+					}
+				})
 			},
 			goSettingsPage() {
 				uni.navigateTo({

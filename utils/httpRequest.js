@@ -1,5 +1,5 @@
-const baseURL = 'http://47.88.25.56:9000/' //测试环境
-// const baseURL = "https://api.venobroker.in/" //生产环境 
+// const baseURL = 'http://47.88.25.56:9000/' //测试环境
+const baseURL = "https://api.venobroker.in/" //生产环境 
 /**
  * 接口请求封装
  */
@@ -18,7 +18,7 @@ function uniRequest(url, data, method = 'POST') {
 				if (res.statusCode == 200) {
 					if (res.data.code === 0) {
 						//	请求成功！
-					} else if (res.data.code === 204) {
+					} else if (res.data.code === 204 || res.data.code === 203) {
 						uni.showModal({
 							title: 'Hint',
 							content: res.data.message,
