@@ -54,7 +54,7 @@
 						status
 					</view>
 					<view class="item-black-value2">
-						{{item.status === 1 ?"Unpaid" : item.status === 2 ? "Finish" : "Reject"}}
+						{{item.status === 1 ? "Finish" : item.status === 2 ? "Finish" : "Wait"}}
 					</view>
 				</view>
 				<view class="list-item-black" style="text-align: right;">

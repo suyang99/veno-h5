@@ -78,7 +78,8 @@
 					<view class="window-card-header">
 						Notice
 					</view>
-					<rich-text class="window-card-content" :nodes="noticeContent" />
+					<view class="window-card-content" v-html="noticeContent" />
+					<!-- <rich-text class="window-card-content" :nodes="noticeContent" /> -->
 					<view class="window-card-btn" @click="switchCommonalityWindow">
 						Confirm
 					</view>
@@ -89,7 +90,11 @@
 </template>
 
 <script>
+	import VueQuillEditor from "vue-quill-editor"
 	export default {
+		// components: {
+		// 	VueQuillEditor
+		// },
 		data() {
 			return {
 				current: 0,
@@ -134,6 +139,10 @@
 				this.uniRequest('common/notice?id=' + value, {}, 'GET').then((res) => {
 					if (res.code === 0) {
 						this.noticeContent = res.data.content;
+						// this.noticeContent = VueQuillEditor.getContents(res.data.content);
+						// VueQuillEditor('#window-card-content', {
+						// 	theme: res.data.content
+						// });
 						this.switchCommonalityWindow()
 					}
 				})
@@ -148,6 +157,7 @@
 						uni.setNavigationBarTitle({
 							title: res.data.site_name
 						})
+						uni.setStorageSync('settings', res.data)
 					}
 				})
 			},
@@ -318,9 +328,11 @@
 					}
 
 					.window-card-content {
+						white-space: pre-wrap;
 						overflow: scroll;
 						height: 70%;
-						padding: 20rpx 30rpx;
+						display: block;
+						margin: 20rpx 30rpx;
 
 						h1,
 						h2,

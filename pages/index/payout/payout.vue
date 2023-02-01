@@ -27,7 +27,7 @@
 				Total Amount:
 			</view>
 			<view class="content-balance-value">
-				₹ {{Number((amount /100 * withdrawCharge).toFixed(2))+Number(amount)}}
+				₹ {{(Number((amount /100 * withdrawCharge).toFixed(2))+Number(amount)).toFixed(2)}}
 			</view>
 		</view>
 		<view class="content-bankitem">
@@ -49,8 +49,8 @@
 	export default {
 		data() {
 			return {
-				value: 0,
-				amount: 0,
+				value: null,
+				amount: null,
 				accountBalance: 0.00,
 				withdrawCharge: 0,
 				range: [],
@@ -73,22 +73,33 @@
 		methods: {
 			accountWithdraw() {
 				const _this = this
-				if (this.amount < this.withdrawLimit.max && this.amount > this.withdrawLimit.min) {
+				if (this.amount <= this.withdrawLimit.max && this.amount >= this.withdrawLimit.min) {
 					this.uniRequest('user/account/withdraw', {
-						amount: this.amount
+						amount: Number(this.amount).toFixed()
 					}).then((res) => {
 						this.getAccountBalance()
-						uni.showModal({
-							content: res.message,
-							showCancel: false,
-							confirmText: 'Confirm',
-							success: function(_res) {
-								if (_res.confirm) {
-									_this.goRecordsPage()
+						if (res.code === 0) {
+							uni.showModal({
+								content: res.message,
+								showCancel: false,
+								confirmText: 'Confirm',
+								success: function(_res) {
+									if (_res.confirm) {
+										_this.goRecordsPage()
 
+									}
 								}
-							}
-						});
+							});
+						} else {
+							uni.showModal({
+								content: res.message,
+								showCancel: false,
+								confirmText: 'Confirm',
+								success: function(_res) {
+									if (_res.confirm) {}
+								}
+							});
+						}
 					})
 				} else {
 					let contentText = "Minimum：" + this.withdrawLimit.min + "，Maximum：" + this.withdrawLimit.max;
@@ -105,6 +116,10 @@
 				}
 
 			},
+			// inputAmount(value) {
+			// 	this.amount = Number(value).toFixed(2)
+			// 	console.log('hi:', Number(value).toFixed(2))
+			// },
 			getAccountBalance() {
 				this.uniRequest('user/account/balance', {}, 'GET').then((res) => {
 					this.accountBalance = res.data.balance

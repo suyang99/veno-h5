@@ -93,7 +93,7 @@
 						})
 						this.tradeGoodsList = newData;
 						this.rate = res.data.rate;
-						uni.setStorage('rate', res.data.rate)
+						uni.setStorageSync('rate', this.rate)
 						this.SetTradeGood()
 
 					}

@@ -14,7 +14,7 @@
 			<view class="mraket-list-item" v-for="(item,index) in recordList" :key="index">
 				<view class="list-item-header">
 					<view :class="item.direction == 1? 'item-header-text1 red' : 'item-header-text1 green'">
-						{{item.direction == 1? "PUT" : "CALL"}}
+						{{item.direction == 1? "CALL" : "PUT"}}
 					</view>
 					<view class="item-header-text2">
 						{{item.goods_name}}/USDT
@@ -62,7 +62,12 @@
 						<view class="black-child-key">
 							Status
 						</view>
-						<view :class="item.result === 1 ? 'black-child-value green':'black-child-value red'">
+						<view v-if="navigator === 0"
+							:class="item.result === 1 ? 'black-child-value green':'black-child-value'">
+							<!-- {{item.result === 1 ? 'Profit' : 'Loss'}} -->
+							Processing
+						</view>
+						<view v-else :class="item.result === 1 ? 'black-child-value green':'black-child-value'">
 							{{item.result === 1 ? 'Profit' : 'Loss'}}
 						</view>
 					</view>
@@ -71,7 +76,7 @@
 							Settlement
 						</view>
 						<view class="black-child-value">
-							₹{{item.gain}}
+							₹{{Number(item.amount)+Number(item.gain)}}
 						</view>
 					</view>
 				</view>
@@ -103,10 +108,10 @@
 				this.navigator = this.navigator === 0 ? 1 : 0
 				let url = `trade/record?type=${this.navigator === 0 ? 'pairs' : 'history'}`
 				this.uniRequest(url, {}, "GET").then((res) => {
-					res.data.data.list.map((item) => {
+					res.data.list.map((item) => {
 						item.created_at = this.formatDateTime(item.created_at).split(' ')[1]
 					});
-					this.recordList = res.data.data.list
+					this.recordList = res.data.list
 				})
 			}
 		}

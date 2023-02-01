@@ -6,7 +6,7 @@
 					{{activeClose}}
 				</view>
 				<view class="header-left-black">
-					≈₹332.27
+					≈₹{{(rate * activeClose).toFixed(2)}}
 					<view class="left-black-call">
 						{{activeChange}}%
 					</view>
@@ -34,7 +34,7 @@
 						24H
 					</view>
 					<view class="right-balck-value">
-						$ {{actualData.high}}
+						$ {{actualData.vol}} B
 					</view>
 				</view>
 			</view>
@@ -62,15 +62,33 @@
 			<echarts v-if="clientHeight !== 0" :style="`height:${clientHeight}px;transition: all .2s ease-in-out;
 			-webkit-transition: all .2s ease-in-out;`" :option="echartsOption" />
 		</view>
+		<view class="kline-deal">
+			<view class="kline-deal-black">
+				<view class="deal-black-key">
+					{{signalRatio}}
+				</view>
+				<view class="deal-black-value">
+					Signal Ratio
+				</view>
+			</view>
+			<view class="kline-deal-black">
+				<view class="deal-black-key">
+					₹ {{balance}}
+				</view>
+				<view class="deal-black-value">
+					Balance
+				</view>
+			</view>
+		</view>
 		<view id="kline-btns" class="kline-btns">
-			<view class="kline-balance">
+			<!-- <view class="kline-balance">
 				<view class="kline-balance-key">
 					₹{{accountBalance}}
 				</view>
 				<view class="kline-balance-value">
 					Balance
 				</view>
-			</view>
+			</view> -->
 			<view class="kline-btns-focus">
 				1M
 			</view>
@@ -129,6 +147,9 @@
 		},
 		data() {
 			return {
+				rate: 0,
+				signalRatio: 0,
+				balance: 0,
 				accountBalance: 0.00,
 				clientHeight: 0,
 				activeId: '',
@@ -141,7 +162,7 @@
 				actualData: {
 					high: 0.00,
 					low: 0.00,
-					high: 0.00
+					vol: 0.00
 				},
 				tradeGoodsList: [],
 				goodsDetailList: [],
@@ -163,8 +184,10 @@
 						type: 'category',
 						boundaryGap: false,
 						splitLine: {
-							show: false,
+							show: true,
+							interval: 10,
 							lineStyle: {
+								width: 1,
 								type: 'dashed',
 								color: 'rgba(128, 128, 128, 0.3)'
 							}
@@ -172,7 +195,9 @@
 						axisLabel: {
 							show: false, // 不显示坐标轴上的文字
 						},
-						data: []
+						data: [],
+						silent: true,
+						axisTick: false
 					},
 					yAxis: {
 						min: function(value) {
@@ -185,32 +210,39 @@
 								color: '#639cab'
 							}
 						},
-						type: 'value',
-						position: 'right',
 						splitLine: {
-							show: false,
+							show: true,
 							lineStyle: {
 								type: 'dashed',
 								color: 'rgba(128, 128, 128, 0.3)'
 							}
 						},
-						interval: 20,
+						type: 'value',
+						position: 'right',
 					},
 					series: [{
 						symbol: "none",
 						data: [],
 						type: 'line',
 						areaStyle: {
-							normal: {
-								color: '#48647f ' //改变区域颜色
+							color: {
+								type: 'linear',
+								x: 0,
+								y: 0,
+								x2: 0,
+								y2: 1,
+								colorStops: [{
+									offset: 0,
+									color: 'rgba(72,100,127,0.5)' // 0% 处的颜色
+								}, {
+									offset: 1,
+									color: 'rgba(72,100,127,0.8)' // 100% 处的颜色
+								}],
 							}
 						},
-						itemStyle: {
-							normal: {
-								lineStyle: {
-									color: '#639cab'
-								}
-							}
+						lineStyle: {
+							width: 1,
+							color: '#639cab'
 						},
 
 					}],
@@ -218,7 +250,8 @@
 						show: true,
 						trigger: 'axis',
 						axisPointer: {
-							type: 'cross'
+							type: 'cross',
+							axis: 'y'
 						},
 					}
 				},
@@ -230,6 +263,11 @@
 		},
 		onLoad(option) {
 			this.routeGuard()
+			this.rate = uni.getStorageSync("rate")
+			let trade_limit = uni.getStorageSync('settings').trade_limit
+			console.log(trade_limit)
+			this.signalRatio = trade_limit.split(',')[1]
+			this.balance = trade_limit.split(',')[0]
 			this.getAccountBalance()
 			uni.setNavigationBarTitle({
 				title: option.name + '/USDT'
@@ -324,7 +362,7 @@
 						this.actualData = {
 							high: item.high,
 							low: item.low,
-							high: item.high
+							vol: (item.vol / 1000000).toFixed(2)
 						}
 					}
 				})
@@ -443,6 +481,23 @@
 		.kline-chart {
 			min-height: 45vh;
 			color: white;
+		}
+
+		.kline-deal {
+			display: flex;
+
+			.kline-deal-black {
+				width: 50%;
+				text-align: center;
+
+				.deal-black-key {
+					color: white;
+				}
+
+				.deal-black-value {
+					color: #4d5675;
+				}
+			}
 		}
 
 		.kline-btns {
