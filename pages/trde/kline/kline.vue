@@ -34,7 +34,7 @@
 						24H
 					</view>
 					<view class="right-balck-value">
-						$ {{actualData.vol}} B
+						{{actualData.vol}}
 					</view>
 				</view>
 			</view>
@@ -62,24 +62,7 @@
 			<echarts v-if="clientHeight !== 0" :style="`height:${clientHeight}px;transition: all .2s ease-in-out;
 			-webkit-transition: all .2s ease-in-out;`" :option="echartsOption" />
 		</view>
-		<view class="kline-deal">
-			<view class="kline-deal-black">
-				<view class="deal-black-key">
-					{{signalRatio}}
-				</view>
-				<view class="deal-black-value">
-					Signal Ratio
-				</view>
-			</view>
-			<view class="kline-deal-black">
-				<view class="deal-black-key">
-					₹ {{balance}}
-				</view>
-				<view class="deal-black-value">
-					Balance
-				</view>
-			</view>
-		</view>
+
 		<view id="kline-btns" class="kline-btns">
 			<!-- <view class="kline-balance">
 				<view class="kline-balance-key">
@@ -89,18 +72,36 @@
 					Balance
 				</view>
 			</view> -->
+			<view class="kline-deal">
+				<view class="kline-deal-black">
+					<view class="deal-black-key">
+						{{signalRatio}}%
+					</view>
+					<view class="deal-black-value">
+						Signal Ratio
+					</view>
+				</view>
+				<view class="kline-deal-black">
+					<view class="deal-black-key">
+						₹ {{accountBalance}}
+					</view>
+					<view class="deal-black-value">
+						Balance
+					</view>
+				</view>
+			</view>
 			<view class="kline-btns-focus">
 				1M
 			</view>
 			<view class="kline-btns-amount">
 				<view class="btns-amount-operation btns-amount-minus"
-					@click="inputValue > 10? inputValue = inputValue - 10 : inputValue = 0">
+					@click="inputValue > 1? inputValue = inputValue - 1 : inputValue = 0">
 					-
 				</view>
 				<view class="recharge-input">
 					<uni-easyinput type="text" v-model="inputValue" :inputBorder='false' :clearable="false" />
 				</view>
-				<view class="btns-amount-operation btns-amount-add" @click="inputValue = inputValue + 10 ">
+				<view class="btns-amount-operation btns-amount-add" @click="inputValue = inputValue + 1 ">
 					+
 				</view>
 			</view>
@@ -265,8 +266,7 @@
 			this.routeGuard()
 			this.rate = uni.getStorageSync("rate")
 			let trade_limit = uni.getStorageSync('settings').trade_limit
-			console.log(trade_limit)
-			this.signalRatio = trade_limit.split(',')[1]
+			this.signalRatio = Number(`${trade_limit.split(',')[1].split('')[0]}${trade_limit.split(',')[1].split('')[1]}`)
 			this.balance = trade_limit.split(',')[0]
 			this.getAccountBalance()
 			uni.setNavigationBarTitle({
@@ -307,7 +307,10 @@
 			},
 			getAccountBalance() {
 				this.uniRequest('user/account/balance', {}, 'GET').then((res) => {
-					this.accountBalance = res.data.balance
+					this.accountBalance = Number(res.data.balance)
+					this.inputValue = Number(Math.floor((this.accountBalance * this.signalRatio / 100) * 100) /
+						100)
+					// console.log(this.inputValue)
 				})
 			},
 			getGoodsDetail() {
@@ -362,7 +365,7 @@
 						this.actualData = {
 							high: item.high,
 							low: item.low,
-							vol: (item.vol / 1000000).toFixed(2)
+							vol: item.amount.toFixed(2)
 						}
 					}
 				})
@@ -386,7 +389,10 @@
 							confirmText: 'Confirm',
 							success: function(res) {
 								if (res.confirm) {
-
+									uni.navigateTo({
+										url: "/pages/profile/recods/exchange/exchange"
+									})
+									clearTimeout(this.setTimeoutFun)
 								}
 							}
 						});
@@ -483,25 +489,27 @@
 			color: white;
 		}
 
-		.kline-deal {
-			display: flex;
 
-			.kline-deal-black {
-				width: 50%;
-				text-align: center;
-
-				.deal-black-key {
-					color: white;
-				}
-
-				.deal-black-value {
-					color: #4d5675;
-				}
-			}
-		}
 
 		.kline-btns {
 			padding: 30rpx;
+
+			.kline-deal {
+				display: flex;
+
+				.kline-deal-black {
+					width: 50%;
+					text-align: center;
+
+					.deal-black-key {
+						color: white;
+					}
+
+					.deal-black-value {
+						color: #4d5675;
+					}
+				}
+			}
 
 			.kline-balance {
 				width: 50%;

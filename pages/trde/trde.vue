@@ -87,7 +87,8 @@
 								change: this.randomNumberFun(9.99).toFixed(2),
 								high: item.data.high,
 								low: item.data.low,
-								high: item.data.high
+								high: item.data.high,
+								amount: item.data.amount
 							})
 
 						})

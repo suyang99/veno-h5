@@ -90,11 +90,7 @@
 </template>
 
 <script>
-	import VueQuillEditor from "vue-quill-editor"
 	export default {
-		// components: {
-		// 	VueQuillEditor
-		// },
 		data() {
 			return {
 				current: 0,
@@ -139,10 +135,6 @@
 				this.uniRequest('common/notice?id=' + value, {}, 'GET').then((res) => {
 					if (res.code === 0) {
 						this.noticeContent = res.data.content;
-						// this.noticeContent = VueQuillEditor.getContents(res.data.content);
-						// VueQuillEditor('#window-card-content', {
-						// 	theme: res.data.content
-						// });
 						this.switchCommonalityWindow()
 					}
 				})

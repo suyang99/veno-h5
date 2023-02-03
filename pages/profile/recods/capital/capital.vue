@@ -36,7 +36,7 @@
 				</view>
 			</view>
 			<view class="content-list-nomare">
-				- No more -
+				<uni-load-more :status="status" :content-text="contentText" @clickLoadMore="clickLoadMore" />
 			</view>
 		</view>
 		<view v-else class="content-list">
@@ -67,7 +67,7 @@
 				</view>
 			</view>
 			<view class="content-list-nomare">
-				- No more -
+				<uni-load-more :status="status" :content-text="contentText" @clickLoadMore="clickLoadMore" />
 			</view>
 		</view>
 	</view>
@@ -77,27 +77,50 @@
 	export default {
 		data() {
 			return {
+				status: 'more',
+				contentText: {
+					contentdown: 'View more',
+					contentrefresh: 'Under load...',
+					contentnomore: 'No more'
+				},
+				pages: 1,
 				dataList: [],
-				pageType: ''
+				pageType: '',
 			}
 		},
 		onLoad(op) {
 			this.routeGuard()
 			this.pageType = op.type
-			this.getAccountList(op.type)
+			this.getAccountList()
 			uni.setNavigationBarTitle({
 				title: (op.type == 'recharge' ? 'Recharge' : op.type == 'withdraw' ? "Withdraw" : "Award") +
 					' Record'
 			})
 		},
 		methods: {
-			getAccountList(value) {
-				let url = `user/account/record?type=${value}`
+			getAccountList() {
+				this.status = 'loading'
+				let url = `user/account/record?type=${this.pageType}&page=${this.pages}`
 				this.uniRequest(url, {}, 'GET').then((res) => {
-					res.data.list.map(item => item.updated_at = this.formatDateTime(item.updated_at))
-					this.dataList = res.data.list
+					if (res.data.list.length > 0) {
+						res.data.list.map(item => {
+							item.updated_at = this.formatDateTime(item.updated_at)
+							this.dataList.push(item)
+						})
+						this.status = 'more'
+					} else {
+						this.status = "noMore"
+					}
+
 				})
 			},
+			clickLoadMore(status) {
+				if (status.detail.status == "more") {
+					this.pages = this.pages + 1
+					this.getAccountList()
+				}
+
+			}
 		}
 	}
 </script>

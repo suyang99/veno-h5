@@ -8,7 +8,8 @@
 
 <style>
 	/*每个页面公共css */
-	uni-page-body,
+	html,
+	body uni-page-body,
 	page {
 		height: 100%;
 		box-sizing: border-box;

@@ -2,11 +2,11 @@
 	<view class="content">
 		<view class="content-header">
 			<view :class="navigator == 0 ? 'content-header-item header-item-active' : 'content-header-item'"
-				@click="getRecordList">
+				@click="switchover">
 				Trading Pairs
 			</view>
 			<view :class="navigator == 1 ? 'content-header-item header-item-active' : 'content-header-item'"
-				@click="getRecordList">
+				@click="switchover">
 				History
 			</view>
 		</view>
@@ -75,17 +75,21 @@
 						<view class="black-child-key">
 							Settlement
 						</view>
-						<view class="black-child-value">
+						<view v-if="item.result === 1" class="black-child-value">
 							₹{{Number(item.amount)+Number(item.gain)}}
+						</view>
+						<view v-if="item.result !== 1" class="black-child-value">
+							₹0
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view v-else class="mraket-list">
-			<view style="text-align: center;">
+		<view class="mraket-list">
+			<uni-load-more :status="status" :content-text="contentText" @clickLoadMore="clickLoadMore" />
+			<!-- <view style="text-align: center;">
 				- No more -
-			</view>
+			</view> -->
 		</view>
 
 	</view>
@@ -95,6 +99,13 @@
 	export default {
 		data() {
 			return {
+				status: 'more',
+				contentText: {
+					contentdown: 'View more',
+					contentrefresh: 'Under load...',
+					contentnomore: 'No more'
+				},
+				pages: 0,
 				navigator: 1,
 				recordList: []
 			}
@@ -102,17 +113,37 @@
 		onLoad() {
 			this.routeGuard()
 			this.getRecordList()
+
 		},
 		methods: {
-			getRecordList() {
+			switchover() {
+				this.recordList = []
 				this.navigator = this.navigator === 0 ? 1 : 0
-				let url = `trade/record?type=${this.navigator === 0 ? 'pairs' : 'history'}`
+				this.pages = 1
+				this.getRecordList()
+			},
+			getRecordList() {
+				this.status = 'loading'
+
+				let url = `trade/record?type=${this.navigator === 0 ? 'pairs' : 'history'}&page=${this.pages}`
 				this.uniRequest(url, {}, "GET").then((res) => {
-					res.data.list.map((item) => {
-						item.created_at = this.formatDateTime(item.created_at).split(' ')[1]
-					});
-					this.recordList = res.data.list
+					if (res.data.list.length > 0) {
+						res.data.list.map((item) => {
+							item.created_at = this.formatDateTime(item.created_at).split(' ')[1]
+							this.recordList.push(item)
+						});
+						this.status = 'more'
+					} else {
+						this.status = "noMore"
+					}
 				})
+			},
+			clickLoadMore(status) {
+				if (status.detail.status == "more") {
+					this.pages = this.pages + 1
+					this.getRecordList()
+				}
+
 			}
 		}
 	}
@@ -124,6 +155,8 @@
 		background: #f6f7f9;
 
 		.content-header {
+			position: sticky;
+			top: 5%;
 			height: 70rpx;
 			padding: 20rpx;
 			background: #ffffff;
