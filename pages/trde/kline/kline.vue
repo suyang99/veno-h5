@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="content" div v-visibility-change="listenVisible">
 		<view id="kline-header" class="kline-header">
 			<view class="kline-header-left">
 				<view class="header-left-price">
@@ -256,7 +256,8 @@
 						},
 					}
 				},
-				setTimeoutFun: null
+				setTimeoutFun: null,
+				getGoodsDetailTiming: null,
 			}
 		},
 		created() {
@@ -292,12 +293,26 @@
 			this.echartsOption.xAxis.data = this.xAxisDatas
 			this.getSettings()
 			this.getGoodsDetail()
+			this.getGoodsDetailTiming = setTimeout(() => {
+				this.getGoodsDetail()
+			}, 480000)
 
 		},
 		mounted() {
 
 		},
 		methods: {
+			listenVisible(evt, hidden) {
+				if (hidden) {
+					clearTimeout(this.getGoodsDetailTiming)
+					console.log("清除：", this.getGoodsDetailTiming)
+				} else {
+					this.getGoodsDetailTiming = setTimeout(() => {
+						this.getGoodsDetail()
+					}, 480000)
+					console.log("装载：", this.getGoodsDetailTiming)
+				}
+			},
 			getSettings() {
 				this.uniRequest('common/settings', {}, 'GET').then((res) => {
 					if (res.code === 0) {
@@ -328,7 +343,6 @@
 							this.echartsOption.series[0].data = this.yAxisDatas
 							clearTimeout(this.setTimeoutFun)
 						}
-
 						this.initEchartsData()
 					}
 				})
@@ -349,7 +363,6 @@
 
 				} else {
 					this.ifCirculation = true
-					this.getGoodsDetail()
 					this.cycleTime = 0
 				}
 				this.setTimeoutFun = setTimeout(() => {

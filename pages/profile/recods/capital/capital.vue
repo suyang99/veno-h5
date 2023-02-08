@@ -79,7 +79,7 @@
 			return {
 				status: 'more',
 				contentText: {
-					contentdown: 'View more',
+					contentdown: 'Pull up to load more',
 					contentrefresh: 'Under load...',
 					contentnomore: 'No more'
 				},
@@ -97,6 +97,9 @@
 					' Record'
 			})
 		},
+		onReachBottom() {
+			this.clickLoadMore()
+		},
 		methods: {
 			getAccountList() {
 				this.status = 'loading'
@@ -111,11 +114,14 @@
 					} else {
 						this.status = "noMore"
 					}
+					if (res.data.total < 9) {
+						this.status = "noMore"
+					}
 
 				})
 			},
 			clickLoadMore(status) {
-				if (status.detail.status == "more") {
+				if (this.status == "more") {
 					this.pages = this.pages + 1
 					this.getAccountList()
 				}

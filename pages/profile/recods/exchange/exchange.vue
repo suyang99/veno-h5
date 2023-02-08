@@ -86,7 +86,7 @@
 			</view>
 		</view>
 		<view class="mraket-list">
-			<uni-load-more :status="status" :content-text="contentText" @clickLoadMore="clickLoadMore" />
+			<uni-load-more :status="status" :content-text="contentText" />
 			<!-- <view style="text-align: center;">
 				- No more -
 			</view> -->
@@ -101,7 +101,7 @@
 			return {
 				status: 'more',
 				contentText: {
-					contentdown: 'View more',
+					contentdown: 'Pull up to load more',
 					contentrefresh: 'Under load...',
 					contentnomore: 'No more'
 				},
@@ -114,6 +114,9 @@
 			this.routeGuard()
 			this.getRecordList()
 
+		},
+		onReachBottom() {
+			this.clickLoadMore()
 		},
 		methods: {
 			switchover() {
@@ -136,10 +139,13 @@
 					} else {
 						this.status = "noMore"
 					}
+					if (res.data.total < 9) {
+						this.status = "noMore"
+					}
 				})
 			},
 			clickLoadMore(status) {
-				if (status.detail.status == "more") {
+				if (this.status == "more") {
 					this.pages = this.pages + 1
 					this.getRecordList()
 				}

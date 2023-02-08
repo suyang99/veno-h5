@@ -95,6 +95,9 @@
 			this.getSettingsFn()
 		},
 		onShow() {
+			this.routeGuard()
+			this.getUserInfo()
+			this.getSettingsFn()
 			this.getAccountBalance()
 		},
 		methods: {

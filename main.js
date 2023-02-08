@@ -13,6 +13,10 @@ import {
 Vue.prototype.formatDateTime = formatDateTime;
 Vue.prototype.routeGuard = routeGuard
 
+import visibility from 'vue-visibility-change'
+
+Vue.use(visibility)
+
 // #ifndef VUE3
 import Vue from 'vue'
 Vue.config.productionTip = false
