@@ -75,6 +75,13 @@
 				}
 			}
 		},
+		onLoad(op) {
+			if (op.code) {
+				this.register.invitation_code = op.code
+				console.log(this.register.invitation_code)
+			}
+
+		},
 		methods: {
 			loginFn() {
 				this.requestLogin('user/login', this.login)

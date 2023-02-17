@@ -89,11 +89,6 @@
 				onlineService: ''
 			}
 		},
-		onLoad() {
-			this.routeGuard()
-			this.getUserInfo()
-			this.getSettingsFn()
-		},
 		onShow() {
 			this.routeGuard()
 			this.getUserInfo()
@@ -104,6 +99,7 @@
 			getUserInfo() {
 				this.uniRequest('user/info', {}, 'GET').then((res) => {
 					this.userInfo = res.data
+					uni.setStorageSync("userInfo", res.data)
 				})
 			},
 			getAccountBalance() {
